@@ -1,0 +1,187 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset0 Menlo-Regular;
+\f3\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red245\green245\blue245;\red148\green6\blue75;
+\red19\green36\blue126;\red242\green242\blue242;\red180\green36\blue25;\red64\green11\blue217;}
+\margl1440\margr1440\vieww28600\viewh13420\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 apt-get tool\
+#to search a package\
+apt-cache search package_name\
+\
+#to remove all the remaining directories of an uninstalled package.\
+apt-get remove \'97purge package_name\
+\
+#to remove all the lib\
+apt-get autoremove package_name\
+\
+#to upgrade package\
+apt-get upgrade \
+\
+to upgrade the dist\
+apt-get dist upgrade\
+\
+package management utility.\
+dpgk -i package_name\
+\
+if you are prompted for dependendies while using dpkg\
+\
+do a\
+apt-get upgrade\
+then\
+apt-get -f upgrade\
+\
+to find an installed package.\
+dpkg \'97get-selections | grep dropbox\
+\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+curl -XPUT 'http://localhost:9200/close5/' -d '\{\
+    "settings" : \{\
+        "index" : \{\
+            "number_of_shards" : 3,\
+            "number_of_replicas" : 0\
+        \}\
+    \}\
+\}'\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0 \cf0 \kerning1\expnd0\expndtw0 \
+\pard\pardeftab720
+
+\f2\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+curl -XPUT http://\cf4 \expnd0\expndtw0\kerning0
+localhost:9200\cf2 \expnd0\expndtw0\kerning0
+/close5/user/_mapping -d \cf5 \expnd0\expndtw0\kerning0
+'\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+\{\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+  "user": \{\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+    "properties": \{\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+      "name.full": \{ "type": "string", "index": "not_analyzed" \},\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+      "email": \{ "type": "string", "index": "not_analyzed" \},\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+      "location": \{ "type": "geo_point" \}\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+    \}\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+  \}\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+\}\'92\
+\cf2 \expnd0\expndtw0\kerning0
+curl -XPUT http://\cf4 \expnd0\expndtw0\kerning0
+localhost:9200\cf2 \expnd0\expndtw0\kerning0
+/close5/item/_mapping -d \cf5 \expnd0\expndtw0\kerning0
+'\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+\{\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+  "item": \{\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+    "_parent": \{\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+      "type": "user"\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+    \},\cf2 \expnd0\expndtw0\kerning0
+\
+\
+\cf5 \expnd0\expndtw0\kerning0
+    "properties": \{\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+      "location": \{ "type": "geo_point" \}\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+    \}\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+  \}\cf2 \expnd0\expndtw0\kerning0
+\
+\cf5 \expnd0\expndtw0\kerning0
+\}'
+\f0\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+mongoimport --db close5-live --collection <coll-name> --type json --file  --jsonArray\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f3\fs28 \cf6 \cb0 \kerning1\expnd0\expndtw0 \CocoaLigature0 ES_HOST = \{\
+    \cf7 "host"\cf6  : \cf7 "localhost"\cf6 ,\
+    \cf7 "port"\cf6  : 9200\
+\}
+\f1\fs24 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f3\fs28 \cf8 \cb0 \kerning1\expnd0\expndtw0 \CocoaLigature0 # create ES client, create index\cf6 \
+es = Elasticsearch(hosts = [ES_HOST])\
+\
+if es.indices.exists(INDEX_NAME):\
+    print(\cf7 "deleting '%s' index..."\cf6  % (INDEX_NAME))\
+    res = es.indices.delete(index = INDEX_NAME)\
+    print(\cf7 " response: '%s'"\cf6  % (res))\
+\
+request_body = \{\
+    \cf7 "settings"\cf6  : \{\
+        \cf7 "number_of_shards"\cf6 : 1,\
+        \cf7 "number_of_replicas"\cf6 : 0\
+    \}\
+\}\
+\
+print(\cf7 "creating '%s' index..."\cf6  % (INDEX_NAME))\
+res = es.indices.create(index = INDEX_NAME, body = request_body)\
+print(\cf7 " response: '%s'"\cf6  % (res))\
+\
+\
+\cf8 # bulk index the data\cf6 \
+print(\cf7 "bulk indexing..."\cf6 )\
+res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)\
+\cf8 #print(" response: '%s'" % (res))\cf6 \
+\
+\
+\cf8 # sanity check\cf6 \
+print(\cf7 "searching..."\cf6 )\
+res = es.search(index = INDEX_NAME, size=2, body=\{\cf7 "query"\cf6 : \{\cf7 "match_all"\cf6 : \{\}\}\})\
+print(\cf7 " response: '%s'"\cf6  % (res))\
+\
+print(\cf7 "results:"\cf6 )\
+for hit in res[\cf7 'hits'\cf6 ][\cf7 'hits'\cf6 ]:\
+    print(hit[\cf7 "_source"\cf6 ])\
+\
+    Status API Training Shop Blog About Pricing
+\f1\fs24 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f3\fs28 \cf6 \cb0 \kerning1\expnd0\expndtw0 \CocoaLigature0 ES_HOST = \{
+\f1\fs24 \cf0 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1  
+\f3\fs28 \cf6 \cb0 \kerning1\expnd0\expndtw0 \CocoaLigature0 "host" : "localhost", "port" : 9200 \}\
+\
+[\{'index': \{'_type': 'user', '_id': '5425c994794750da46000001', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}, \{'index': \{'_type': 'user', '_id': '5425d2ed794750da4600001b', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}, \{'index': \{'_type': 'user', '_id': '542b1f1bfc1e0dde09000026', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}, \{'index': \{'_type': 'user', '_id': '542b269ffc1e0dde09000037', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}, \{'index': \{'_type': 'user', '_id': '542b302efc1e0dde09000046', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}, \{'index': \{'_type': 'user', '_id': '542b683dfc1e0dde0900009f', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}, \{'index': \{'_type': 'user', '_id': '542ba0ebfc1e0dde090000db', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}, \{'index': \{'_type': 'user', '_id': '542c1c92fc1e0dde090000e3', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}, \{'index': \{'_type': 'user', '_id': '542c2fecfc1e0dde090000e7', '_index': 'close5'\}\}, \{'lastName': 'Woertink', 'email': 'me@jeremywoertink.info', 'name': 'Jeremy'\}]\
+[\{'index': \{'_type': 'user', '_id': '5425c994794750da46000001', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '5425d2ed794750da4600001b', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '542b1f1bfc1e0dde09000026', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '542b269ffc1e0dde09000037', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '542b302efc1e0dde09000046', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '542b683dfc1e0dde0900009f', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '542ba0ebfc1e0dde090000db', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '542c1c92fc1e0dde090000e3', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '542c2fecfc1e0dde090000e7', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna'\}, \{'index': \{'_type': 'user', '_id': '542c3304fc1e0dde090000e9', '_index': 'close5'\}\}, \{'lastName': 'Lopez', 'email': 'rvivas12@gmail.com', 'name': 'Rosanna\'92\}]:q!}

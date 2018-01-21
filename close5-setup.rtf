@@ -1,0 +1,63 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf810
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\froman\fcharset0 Times-Roman;
+}
+{\colortbl;\red255\green255\blue255;\red52\green52\blue52;\red255\green255\blue255;\red0\green0\blue0;
+}
+{\*\expandedcolortbl;;\cssrgb\c26667\c26667\c26667;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0;
+}
+\margl1440\margr1440\vieww20760\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 A Quick Troubleshooting guide for close5 staging2\
+To deploy a new package (code sitting in any branch of micro services).\
+Jump on to Jenkins server in egg cloud.\
+\
+http://jenkins.ecg.close5.com\
+\
+Once login\'97 click on the micro service name from the menu.\
+ \
+1 - click on \'93build with parameters\'94.\
+2 - enter the branch name you want deploy the code from and click build (default branch name is staging).\
+\
+This job will package up the code and all its dependencies into a ubuntu installable package and also it will trigger another job in staging2 jenkins that is in AWS (running chef client on the sever that is running the Micro service) to install and configure the micro service.\
+\
+Note: your latest code should be running the respective micro service once this job is complete. However, if this is not the case, follow the instruction below to troubleshoot it issue.\
+\
+1 - login to aws console with you username and password and 2FA: 
+\f1\b\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+https://dev-close5.signin.aws.amazon.com/console\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 2 - Once logged in: Click on Services (at top left corner) -> EC2\
+3 - in the search Bar type the micro service name you are trying to login to.\
+4 - Select the server and click connect (right above the search bar)\
+5 - Copy the server\'92s ip address/hostname.\
+6 - Connect to jump box frontend-jumphost.staging2.close5.com  if you are trying to connect to any backend server such as mongodb or elasticsearch. Use backend-jumphost.staging2.close5.com as your jump box.\
+\
+##command to run\
+$ ssh -i close5-lnp.pem ubuntu@frontend-jumphost.staging2.close5.com\
+\
+7 - Once successfully logged into the jump box. Now you can connect to the server running micro service.\
+##command to run\
+$ ssh -i ~/.ssh/close5-lnp.pem ubuntu@< paste the ip address that was copied in step 5 >\
+\
+8 - Once successfully logged in, check if server has installed the latest package version available in repository (deployed in step 2).\
+##command to run\
+$ apt-get update && apt-cache policy <Micro Service name that should also be the package name>  | head\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f2\b \cf4 \expnd0\expndtw0\kerning0
+https://close5.signin.aws.amazon.com/console 
+\f0\b0 \cf0 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sl340\partightenfactor0
+\cf2 \
+
+\f0\b0\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+}

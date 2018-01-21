@@ -1,0 +1,154 @@
+################
+##   Search   ##
+################
+production-search
+alpha-search
+search-staging
+
+#####################
+##   ms-sessions   ##
+#####################
+alpha-sessions
+prod-sessions
+staging-sessions
+
+#################
+##   ms-user   ##
+#################
+alpha-user
+prod-user
+staging-user
+
+###############
+##   admin   ##
+###############
+manager-clarifai-analysis
+manager-clarifai
+manager-tnt
+manager-rc1
+manager-staging
+manager
+
+###############
+##   Items   ##
+###############
+alpha-items
+prod-items
+stage-items
+
+#####################
+##   Site Managr   ##
+#####################
+qp-prod-index-NEW-ES
+qp-prod-bulletin
+qp-stage-bulletin2
+qp-prod-index
+qp-prod-email
+qp-prod-pushnote
+qp-stage-pushnote2
+qp-stage-index
+qp-stage-email
+consumer-new
+
+#################
+##   web-app   ##
+#################
+webapp-2016-stage
+the-hub
+website-2016-qa
+website-2016
+c5-production
+
+#####################
+##   MS-delivery   ##
+#####################
+alan-staging-delivery
+production-delivery
+alpha-delivery
+staging-delivery
+
+###########################
+##   Clarifai Analysis   ##
+###########################
+clarifaiAnalysis-staging
+
+######################
+##   ms-bulletins   ##
+######################
+prod-bulletins
+staging-bulletins2
+
+###################
+##   analytics   ##
+###################
+adjust-staging
+adjust
+
+################################
+##   MS-dw-kinesis-consumer   ##
+################################
+staging-dw-kinesis-consumer
+
+#####################
+##   MS-Payments   ##
+#####################
+alpha-payments
+staging-payments
+
+##################
+##   core-api   ##
+##################
+dylan-staging
+samin-prod-test-2
+c5-prod-1-clone
+c5-prod
+samin-staging2
+staging
+edmond-staging
+chris-staging2
+staging2-admin-api
+admin-api
+prod-node-05-22
+alan-staging
+alpha
+
+##############
+##   chat   ##
+##############
+production-chat
+alpha-chat
+staging-chat
+
+#####################
+##   MS-location   ##
+#####################
+staging-location
+production-location
+
+######################
+##   MS Following   ##
+######################
+prod-following
+staging-following
+
+#######################
+##   images-server   ##
+#######################
+alpha-11-22
+staging-sysmond
+c5-prod-get
+c5-prod-post
+staging-images-server
+
+############################
+##   MS Recommendations   ##
+############################
+staging-recs
+alpha-recommendations
+prod-recommendations
+
+#################
+##   Scripts   ##
+#################
+production
+

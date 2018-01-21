@@ -1,0 +1,121 @@
+[2017-07-12 17:11:41,755 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:11:41,756 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:11:41,786 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search?size=10 [status:200 request:0.030s]
+[2017-07-12 17:12:47,909 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:12:47,909 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:12:47,915 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.006s]
+[2017-07-12 17:14:33,126 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:14:33,126 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:14:33,131 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:15:29,887 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:15:29,887 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:15:29,892 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:15:51,314 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:15:51,314 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:15:51,319 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.004s]
+[2017-07-12 17:17:16,160 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:17:16,160 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:17:16,165 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:17:30,775 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:17:30,775 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:17:30,780 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:18:13,350 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:18:13,351 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:18:13,358 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.008s]
+[2017-07-12 17:18:50,917 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:18:50,918 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:18:50,923 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:19:37,797 INFO] (MainThread) Total number of documents that matched the Query: {"query": { "range": { "createdAt" : { "lte" : "now-180d/d" }}}}
+[2017-07-12 17:19:37,797 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:19:37,802 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:35:49,401 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:35:49,428 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.027s]
+[2017-07-12 17:35:49,429 INFO] (MainThread) Total number of documents that matched the Query: 1417
+[2017-07-12 17:37:35,868 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:37:35,872 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:37:35,873 INFO] (MainThread) Total number of documents that matched the Query: 1417
+[2017-07-12 17:41:51,083 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:41:51,088 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:41:51,088 INFO] (MainThread) Total number of documents that matched the Query: 1417
+[2017-07-12 17:42:05,185 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:42:05,189 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:42:05,190 INFO] (MainThread) Total number of documents that matched the Query: 1417
+[2017-07-12 17:42:05,193 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search?size=10 [status:200 request:0.003s]
+[2017-07-12 17:45:05,464 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:45:05,469 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:45:05,470 INFO] (MainThread) Total number of documents that matched the Query: 1417
+[2017-07-12 17:45:05,473 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search?size=10 [status:200 request:0.003s]
+[2017-07-12 17:45:05,479 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55a4a5f8627fc7d71ce73381 [status:200 request:0.006s]
+[2017-07-12 17:45:05,482 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55a4a672627fc7d71ce733a9 [status:200 request:0.002s]
+[2017-07-12 17:45:05,483 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55a4a6b9627fc7d71ce733bb [status:200 request:0.001s]
+[2017-07-12 17:45:05,484 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55a4fd58627fc7d71ce733e3 [status:200 request:0.001s]
+[2017-07-12 17:45:05,486 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55a7761b7bd9e22e17455da3 [status:200 request:0.001s]
+[2017-07-12 17:45:05,487 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55a779527bd9e22e17455daa [status:200 request:0.001s]
+[2017-07-12 17:45:05,488 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55a890997bd9e22e17455dcf [status:200 request:0.001s]
+[2017-07-12 17:45:05,489 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55ac8322fade7e106ee66c68 [status:200 request:0.001s]
+[2017-07-12 17:45:05,491 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55ac956ffade7e106ee66ca3 [status:200 request:0.001s]
+[2017-07-12 17:45:05,492 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55ac95eafade7e106ee66ca6 [status:200 request:0.001s]
+[2017-07-12 17:45:05,494 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.002s]
+[2017-07-12 17:45:05,494 INFO] (MainThread) Total number of remaining documents that matched the Query: 1417
+[2017-07-12 17:46:02,791 INFO] (MainThread) Starting new HTTP connection (1): localhost
+[2017-07-12 17:46:02,797 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:46:02,797 INFO] (MainThread) Total number of documents that matched the Query: 1407
+[2017-07-12 17:46:02,801 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search?size=10 [status:200 request:0.003s]
+[2017-07-12 17:46:02,802 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55ae2bff7868ec9012a539a9 [status:200 request:0.001s]
+[2017-07-12 17:46:02,804 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55af40397868ec9012a539ef [status:200 request:0.002s]
+[2017-07-12 17:46:02,806 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55af43507868ec9012a53a02 [status:200 request:0.001s]
+[2017-07-12 17:46:02,807 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55af5eac7868ec9012a53a24 [status:200 request:0.001s]
+[2017-07-12 17:46:02,808 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55af8b067868ec9012a53a62 [status:200 request:0.001s]
+[2017-07-12 17:46:02,810 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55af8eee7868ec9012a53a75 [status:200 request:0.001s]
+[2017-07-12 17:46:02,811 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55b076cd8e2b986967d4df84 [status:200 request:0.001s]
+[2017-07-12 17:46:02,813 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55b077338e2b986967d4df87 [status:200 request:0.001s]
+[2017-07-12 17:46:02,815 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55b077578e2b986967d4df89 [status:200 request:0.001s]
+[2017-07-12 17:46:02,816 INFO] (MainThread) DELETE http://localhost:9200/close5-dev/item/55b0b96a8e2b986967d4dfff [status:200 request:0.001s]
+[2017-07-12 17:46:02,821 INFO] (MainThread) GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.004s]
+[2017-07-12 17:46:02,821 INFO] (MainThread) Total number of remaining documents that matched the Query: 1407
+[2017-07-12 17:48:12,047 INFO] Starting new HTTP connection (1): localhost
+[2017-07-12 17:48:12,052 INFO] GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:48:12,052 INFO] Total number of documents that matched the Query: 1397
+[2017-07-12 17:48:12,055 INFO] GET http://localhost:9200/close5-dev/item/_search?size=10 [status:200 request:0.003s]
+[2017-07-12 17:48:12,057 INFO] DELETE http://localhost:9200/close5-dev/item/55b134a68e2b986967d4e03d [status:200 request:0.001s]
+[2017-07-12 17:48:12,059 INFO] DELETE http://localhost:9200/close5-dev/item/55b14cbf8e2b986967d4e042 [status:200 request:0.002s]
+[2017-07-12 17:48:12,061 INFO] DELETE http://localhost:9200/close5-dev/item/55b1c2b10ddb186a163187d0 [status:200 request:0.002s]
+[2017-07-12 17:48:12,064 INFO] DELETE http://localhost:9200/close5-dev/item/55b5d2610ddb186a1631894d [status:200 request:0.003s]
+[2017-07-12 17:48:12,065 INFO] DELETE http://localhost:9200/close5-dev/item/55b716080ddb186a16318a5b [status:200 request:0.001s]
+[2017-07-12 17:48:12,067 INFO] DELETE http://localhost:9200/close5-dev/item/55b8702f0ddb186a16318aed [status:200 request:0.001s]
+[2017-07-12 17:48:12,068 INFO] DELETE http://localhost:9200/close5-dev/item/55b871780ddb186a16318af2 [status:200 request:0.001s]
+[2017-07-12 17:48:12,070 INFO] DELETE http://localhost:9200/close5-dev/item/55b8743d0ddb186a16318b1e [status:200 request:0.001s]
+[2017-07-12 17:48:12,071 INFO] DELETE http://localhost:9200/close5-dev/item/55b878530ddb186a16318b23 [status:200 request:0.001s]
+[2017-07-12 17:48:12,073 INFO] DELETE http://localhost:9200/close5-dev/item/55b8cd880ddb186a16318b79 [status:200 request:0.001s]
+[2017-07-12 17:48:12,076 INFO] GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.003s]
+[2017-07-12 17:48:12,076 INFO] Total number of remaining documents that matched the Query: 1397
+[2017-07-12 17:59:02,821 INFO] Starting new HTTP connection (1): localhost
+[2017-07-12 17:59:02,825 INFO] GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 17:59:02,826 INFO] Total number of documents that matched the Query: 1387
+[2017-07-12 17:59:02,829 INFO] GET http://localhost:9200/close5-dev/item/_search?size=10 [status:200 request:0.003s]
+[2017-07-12 17:59:02,831 INFO] DELETE http://localhost:9200/close5-dev/item/55b8cdad0ddb186a16318b83 [status:200 request:0.001s]
+[2017-07-12 17:59:02,833 INFO] DELETE http://localhost:9200/close5-dev/item/55b8d1ef0ddb186a16318bb5 [status:200 request:0.002s]
+[2017-07-12 17:59:02,834 INFO] DELETE http://localhost:9200/close5-dev/item/55b9be70223ac3f62f17b5cd [status:200 request:0.001s]
+[2017-07-12 17:59:02,836 INFO] DELETE http://localhost:9200/close5-dev/item/55b9c271223ac3f62f17b5d0 [status:200 request:0.001s]
+[2017-07-12 17:59:02,837 INFO] DELETE http://localhost:9200/close5-dev/item/55b9c3d6223ac3f62f17b5d3 [status:200 request:0.001s]
+[2017-07-12 17:59:02,839 INFO] DELETE http://localhost:9200/close5-dev/item/55b9c5b6223ac3f62f17b5d4 [status:200 request:0.001s]
+[2017-07-12 17:59:02,840 INFO] DELETE http://localhost:9200/close5-dev/item/55b9c5cc223ac3f62f17b5d5 [status:200 request:0.001s]
+[2017-07-12 17:59:02,842 INFO] DELETE http://localhost:9200/close5-dev/item/55ba1b73223ac3f62f17b628 [status:200 request:0.001s]
+[2017-07-12 17:59:02,844 INFO] DELETE http://localhost:9200/close5-dev/item/55ba1db9223ac3f62f17b633 [status:200 request:0.002s]
+[2017-07-12 17:59:02,845 INFO] DELETE http://localhost:9200/close5-dev/item/55ba1e0e223ac3f62f17b638 [status:200 request:0.001s]
+[2017-07-12 17:59:02,848 INFO] GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.003s]
+[2017-07-12 17:59:02,849 INFO] Total number of remaining documents that matched the Query: 1387
+[2017-07-12 18:00:00,555 INFO] Starting new HTTP connection (1): localhost
+[2017-07-12 18:00:00,560 INFO] GET http://localhost:9200/close5-dev/item/_search [status:200 request:0.005s]
+[2017-07-12 18:00:00,561 INFO] Total number of documents that matched the Query: 1377
+[2017-07-12 18:00:00,565 INFO] GET http://localhost:9200/close5-dev/item/_search?size=10 [status:200 request:0.004s]
+[2017-07-12 18:00:00,567 INFO] DELETE http://localhost:9200/close5-dev/item/55ba1e3c223ac3f62f17b63b [status:200 request:0.001s]
+[2017-07-12 18:00:00,569 INFO] DELETE http://localhost:9200/close5-dev/item/55bb07231502be2268bd75e7 [status:200 request:0.002s]
+[2017-07-12 18:00:00,574 INFO] DELETE http://localhost:9200/close5-dev/item/55bb73561502be2268bd75fa [status:200 request:0.004s]
+[2017-07-12 18:00:00,576 INFO] DELETE http://localhost:9200/close5-dev/item/55bef0071502be2268bd7600 [status:200 request:0.002s]
+[2017-07-12 18:00:00,577 INFO] DELETE http://localhost:9200/close5-dev/item/55bef55d1502be2268bd7611 [status:200 request:0.001s]
+[2017-07-12 18:00:00,579 INFO] DELETE http://localhost:9200/close5-dev/item/55bf0d721502be2268bd7665 [status:200 request:0.001s]
+[2017-07-12 18:00:00,580 INFO] DELETE http://localhost:9200/close5-dev/item/55bf128e1502be2268bd7687 [status:200 request:0.001s]
+[2017-07-12 18:00:00,582 INFO] DELETE http://localhost:9200/close5-dev/item/55bf2dac1502be2268bd769e [status:200 request:0.002s]
+[2017-07-12 18:00:00,583 INFO] DELETE http://localhost:9200/close5-dev/item/55bf2fff1502be2268bd76a9 [status:200 request:0.001s]
+[2017-07-12 18:00:00,584 INFO] DELETE http://localhost:9200/close5-dev/item/55bf4c3a1502be2268bd76fa [status:200 request:0.001s]

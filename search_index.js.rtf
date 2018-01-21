@@ -1,0 +1,295 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red46\green174\blue187;\red242\green242\blue242;\red180\green36\blue25;
+\red64\green11\blue217;\red193\green101\blue28;\red47\green180\blue29;\red200\green20\blue201;\red19\green150\blue163;
+\red29\green226\blue223;}
+\margl1440\margr1440\vieww10800\viewh12180\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 \cb0 \CocoaLigature0 var\cf3  tasker = require(\cf4 'tasker'\cf3 ),\
+  is = require(\cf4 'is2'\cf3 ),\
+  async = require(\cf4 'async'\cf3 ),\
+  http = require(\cf4 'http'\cf3 ),\
+  logger = require(DIR_ROOT + \cf4 '/lib/logger'\cf3 ),\
+  date = require(DIR_ROOT + \cf4 '/lib/date'\cf3 ),\
+  db = require(DIR_ROOT + \cf4 '/lib/database'\cf3 ),\
+  request = require(\cf4 'request'\cf3 ),\
+  PassThrough = require(\cf4 'stream'\cf3 ).PassThrough,\
+  slack = require(DIR_ROOT + \cf4 '/lib/slack'\cf3 );\
+\
+tasker.namespace(\cf4 'search'\cf3 , \cf2 function\cf3  () \cf2 \{\cf3 \
+  tasker.namespace(\cf4 'reindex'\cf3 , \cf2 function\cf3  () \cf2 \{\cf3 \
+\
+    \cf5 // items\cf3 \
+    tasker\
+      .desc(\cf4 'Reindex items that were recently modified.'\cf3 )\
+     .params(\
+      \cf2 \{\cf6 default\cf3 : \cf4 'NO'\cf3 , \cf6 long\cf3 : \cf4 'reindex-all'\cf3 , desc: \cf4 'Reindex everything'\cf2 \}\cf3 ,\
+      \cf2 \{\cf6 default\cf3 : 10, \cf6 long\cf3 : \cf4 'since'\cf3 , \cf6 short\cf3 : \cf4 's'\cf3 , desc: \cf4 'Timeframe of changes to reindex (minutes)'\cf2 \}\cf3 ,\
+      \cf2 \{\cf6 default\cf3 : 0, \cf6 long\cf3 : \cf4 'skip'\cf3 , desc: \cf4 'Skip the number of records'\cf2 \}\cf3 ,\
+      \cf2 \{\cf6 default\cf3 : 0, \cf6 long\cf3 : \cf4 'limit'\cf3 , \cf6 short\cf3 : \cf4 'l'\cf3 , desc: \cf4 'limit the number of records'\cf2 \}\cf3 \
+    )\
+      .define(\cf4 'items'\cf3 , \cf2 function\cf3  (next) \cf2 \{\cf3 \
+        printInformation();\
+\
+        \cf2 var\cf3  query = \cf2 \{\}\cf3 ;\
+        \cf6 if\cf3  (tasker.opts\cf2 [\cf4 'reindex-all'\cf2 ]\cf3  !== \cf4 'YES'\cf3 ) \cf2 \{\cf3 \
+            query.__u = \cf2 \{\cf3  $gt: \cf6 new\cf3  \cf7 Date\cf3 (\cf7 Date\cf3 .now() - 1000 * 60 * tasker.opts\cf2 [\cf4 's'\cf2 ]\cf3 ) \cf2 \}\cf3 \
+        \cf2 \}\cf3 \
+\
+        db.collection(\cf4 'items'\cf3 )\
+          .find(query, \cf6 null\cf3 , \cf2 \{\cf3 limit: tasker.opts.limit,\
+                              skip: tasker.opts.skip\cf2 \}\cf3 , \cf2 function\cf3  (err, cursor) \cf2 \{\cf3 \
+            \cf6 if\cf3  (err) \cf2 \{\cf3 \
+              logger.error(\cf4 'Error getting items'\cf3 , err);\
+              \cf6 return\cf3  next();\
+            \cf2 \}\cf3 \
+\
+            reindexWithCursor(cursor, itemIndexLines, \cf2 function\cf3  (err, num) \cf2 \{\cf3 \
+              db.close();\
+              \cf6 if\cf3  (err) \cf2 \{\cf3 \
+                logger.error(\cf4 'Error reindexing items'\cf3 , err);\
+                \cf6 return\cf3  next();\
+              \cf2 \}\cf3 \
+              \cf5 // slack.send('#logs', 'Indexed ' + num + ' items');\cf3 \
+              logger.info(\cf4 'Indexed '\cf3  + num + \cf4 ' items.'\cf3 );\
+              next();\
+            \cf2 \}\cf3 );\
+          \cf2 \}\cf3 );\
+\cf5 //.skip().limit();\cf3 \
+      \cf2 \}\cf3 );\
+\
+    \cf5 // users\cf3 \
+    tasker\
+      .desc(\cf4 'Reindex users that were recently modified.'\cf3 )\
+      .params(\
+      \cf2 \{\cf6 default\cf3 : \cf4 'NO'\cf3 , \cf6 long\cf3 : \cf4 'reindex-all'\cf3 , desc: \cf4 'Reindex everything'\cf2 \}\cf3 ,\
+      \cf2 \{\cf6 default\cf3 : 0, \cf6 long\cf3 : \cf4 'since'\cf3 , \cf6 short\cf3 : \cf4 's'\cf3 , desc: \cf4 'Timeframe of changes to reindex (minutes)'\cf2 \}\cf3 ,\
+      \cf2 \{\cf6 default\cf3 : \cf4 'NO'\cf3 , \cf6 long\cf3 : \cf4 'skip'\cf3 , desc: \cf4 'Skip the number of records'\cf2 \}\cf3 ,\
+      \cf2 \{\cf6 default\cf3 : \cf4 'NO'\cf3 , \cf6 long\cf3 : \cf4 'limit'\cf3 , \cf6 short\cf3 : \cf4 'l'\cf3 , desc: \cf4 'limit the number of records'\cf2 \}\cf3 \
+    )\
+      .define(\cf4 'users'\cf3 , \cf2 function\cf3  (next) \cf2 \{\cf3 \
+        printInformation();\
+\
+        \cf2 var\cf3  query = \cf2 \{\}\cf3 ;\
+        \cf6 if\cf3  (tasker.opts\cf2 [\cf4 'reindex-all'\cf2 ]\cf3  !== \cf4 'YES'\cf3 ) \cf2 \{\cf3 \
+            query.__u = \cf2 \{\cf3  $gt: \cf6 new\cf3  \cf7 Date\cf3 (\cf7 Date\cf3 .now() - 1000 * 60 * tasker.opts\cf2 [\cf4 's'\cf2 ]\cf3 ) \cf2 \}\cf3 \
+        \cf2 \}\cf3 \
+\
+        db.collection(\cf4 'users'\cf3 )\
+          .find(query, \cf6 null\cf3 , \cf2 \{\cf3 limit: tasker.opts.limit,\
+                              skip: tasker.opts.skip\cf2 \}\cf3 , \cf2 function\cf3  (err, cursor) \cf2 \{\cf3 \
+            \cf6 if\cf3  (err) \cf2 \{\cf3 \
+              logger.error(\cf4 'Error getting users'\cf3 , err);\
+              \cf6 return\cf3  next();\
+            \cf2 \}\cf3 \
+            reindexWithCursor(cursor, userIndexLines, \cf2 function\cf3  (err, num) \cf2 \{\cf3 \
+              \cf6 if\cf3  (err) \cf2 \{\cf3 \
+                logger.error(\cf4 'Error reindexing users'\cf3 , err);\
+                \cf6 return\cf3  next();\
+              \cf2 \}\cf3 \
+\
+              \cf5 // slack.send('#logs', 'Indexed ' + num + ' users');\cf3 \
+              logger.info(\cf4 'Indexed '\cf3  + num + \cf4 ' users.'\cf3 );\
+              next();\
+            \cf2 \}\cf3 );\
+          \cf2 \}\cf3 );\
+      \cf2 \}\cf3 );\
+  \cf2 \}\cf3 );\
+\cf2 \}\cf3 );\
+\
+\
+\cf2 function\cf3  printInformation() \cf2 \{\cf3 \
+  logger.info(\cf4 '----- Information -----'\cf3 );\
+  logger.info(\cf4 'Database URL: '\cf3  + process.env.MONGO_URL);\
+  logger.info(\cf4 'ElasticSearch Host: '\cf3  + process.env.ELASTIC_SEARCH_HOST);\
+  logger.info(\cf4 'ElasticSearch Index: '\cf3  + process.env.ELASTIC_SEARCH_INDEX);\
+  logger.info(\cf4 '-----------------------'\cf3 );\
+\cf2 \}\cf3 \
+\
+\cf2 function\cf3  reindexWithCursor(cursor, indexCreatorFn, callback) \cf2 \{\cf3 \
+  \cf2 var\cf3  indexedCount = 0;\
+\
+  \cf2 var\cf3  url = process.env.ELASTIC_SEARCH_HOST;\
+  \cf6 if\cf3  (process.env.ELASTIC_SEARCH_PORT != 80 && process.env.ELASTIC_SEARCH_PORT != 443) \cf2 \{\cf3 \
+    url += \cf4 ':'\cf3  + process.env.ELASTIC_SEARCH_PORT;\
+  \cf2 \}\cf3 \
+  url += \cf4 '/_bulk'\cf3 ;\
+\
+  \cf2 var\cf3  stream = \cf6 new\cf3  PassThrough();\
+  stream.pipe(request.put(\cf2 \{\cf4 'url'\cf3 : url, \cf4 'json'\cf3 : \cf4 true\cf2 \}\cf3 , \cf2 function\cf3  (err, incomingMessage, result) \cf2 \{\cf3 \
+    \cf6 if\cf3  (err) \cf2 \{\cf3 \
+      \cf6 return\cf3  callback(err);\
+    \cf2 \}\cf3 \
+    \cf5 //console.log('elasticsearch response: ' + JSON.stringify(result));\cf3 \
+  \cf2 \}\cf3 ));\
+\
+  cursor.each(\cf2 function\cf3  (err, obj) \cf2 \{\cf3 \
+      \cf6 if\cf3  (err) \cf2 \{\cf3 \
+        console.log(err);\
+        stream.end();\
+\
+        callback(err, indexedCount);\
+        callback = \cf2 function\cf3  () \cf2 \{\cf3  \cf2 \}\cf3 ;\
+        \cf6 return\cf3 ;\
+      \cf2 \}\cf3 \
+\
+      \cf6 if\cf3  (obj) \cf2 \{\cf3 \
+        \cf6 if\cf3  (indexedCount % 500 == 0) \cf2 \{\cf3 \
+          logger.info(\cf4 'Wrote index for '\cf3  + indexedCount + \cf4 ' objects...'\cf3 );\
+        \cf2 \}\cf3 \
+        \cf5 //console.log(indexCreatorFn(obj));\cf3 \
+        stream.write(indexCreatorFn(obj));\
+        indexedCount++;\
+      \cf2 \}\
+\cf3       \cf6 else\cf3  \cf2 \{\cf3 \
+        stream.end();\
+        callback(\cf6 null\cf3 , indexedCount);\
+      \cf2 \}\cf3 \
+    \cf2 \}\cf3 );\
+\
+\cf2 \}\cf3 \
+\
+\cf5 // Item Index\cf3 \
+\cf2 function\cf3  itemIndexLines(item) \cf2 \{\cf3 \
+  \cf2 var\cf3  data = \cf4 ''\cf3 ;\
+\
+  \cf2 var\cf3  meta = \cf2 \{\cf3 \
+    index: \cf2 \{\cf3 \
+      \cf4 "_index"\cf3 : process.env.ELASTIC_SEARCH_INDEX,\
+      \cf4 "_type"\cf3 : \cf4 "item"\cf3 ,\
+      \cf4 "_id"\cf3 : item._id.toString(),\
+      \cf4 "_parent"\cf3 : item.userId.toString()\
+    \cf2 \}\cf3 \
+  \cf2 \}\cf3 ;\
+\
+  data += JSON.stringify(meta) + \cf8 '\\n'\cf3 ;\
+  data += JSON.stringify(itemIndex(item)) + \cf8 '\\n'\cf3 ;\
+\
+  \cf6 return\cf3  data;\
+\cf2 \}\cf3 \
+\
+\cf2 function\cf3  itemIndex(item) \cf2 \{\cf3 \
+  \cf6 if\cf3  (!item || !item.loc)\
+      \cf6 return\cf3 ;\
+\
+  \cf6 if\cf3  (is.date(item.createdAt))\
+      item.createdAt = item.createdAt.toISOString();\
+  \cf6 if\cf3  (is.date(item.updatedAt))\
+      item.createdAt = item.updatedAt.toISOString();\
+  \cf6 if\cf3  (is.date(item.soldAt))\
+      item.soldAt = item.soldAt.toISOString();\
+  \cf6 if\cf3  (is.array(item.loc))\
+      item.loc.join(\cf4 ','\cf3 );\
+\
+  \cf2 var\cf3  index = \cf2 \{\cf3 \
+    userId: item.userId.toString(),\
+    buyerId: item.buyerId,\
+\
+    \cf6 location\cf3 : item.loc.toString(),\
+\
+    createdAt: item.createdAt,\
+    updatedAt: item.updatedAt,\
+    soldAt: item.soldAt,\
+\
+    description: item.description,\
+    price: item.price,\
+\
+    removed: item.removed,\
+    live: item.live,\
+\
+    watchers: item.watchers,\
+    category: item.category || \cf2 []\cf3 ,\
+\
+    \cf6 status\cf3 : item.\cf6 status\cf3 ,\
+    featured: item.featured\
+  \cf2 \}\cf3 ;\
+\
+  index.answers = (item.questions || \cf2 []\cf3 ).map(\cf2 function\cf3  (q) \cf2 \{\cf3 \
+    \cf6 return\cf3  q.answer;\
+  \cf2 \}\cf3 ).filter(\cf2 function\cf3  (a) \cf2 \{\cf3 \
+      \cf6 return\cf3  a;\
+    \cf2 \}\cf3 );\
+\
+  \cf6 return\cf3  index;\
+\cf2 \}\cf3 \
+\
+\
+\cf5 // User index\cf3 \
+\
+\cf2 function\cf3  userIndexLines(user) \cf2 \{\cf3 \
+  \cf2 var\cf3  data = \cf4 ''\cf3 ;\
+\
+  \cf2 var\cf3  meta = \cf2 \{\cf3 \
+    index: \cf2 \{\cf3 \
+      \cf4 "_index"\cf3 : process.env.ELASTIC_SEARCH_INDEX,\
+      \cf4 "_type"\cf3 : \cf4 "user"\cf3 ,\
+      \cf4 "_id"\cf3 : user._id.toString()\
+    \cf2 \}\cf3 \
+  \cf2 \}\cf3 ;\
+\
+  data += JSON.stringify(meta) + \cf8 '\\n'\cf3 ;\
+  data += JSON.stringify(userIndex(user)) + \cf8 '\\n'\cf3 ;\
+\
+  \cf6 return\cf3  data;\
+\cf2 \}\cf3 \
+\
+\cf2 function\cf3  toString(id) \cf2 \{\cf3 \
+  \cf6 return\cf3  id.toString();\
+\cf2 \}\cf3 \
+\
+\cf2 function\cf3  userIndex(user) \cf2 \{\cf3 \
+  user.selling = user.selling || \cf2 []\cf3 ;\
+  user.sold = user.sold || \cf2 []\cf3 ;\
+  user.unlisted = user.unlisted || \cf2 []\cf3 ;\
+  user.watching = user.watching || \cf2 []\cf3 ;\
+  user.photos = user.photos || \cf2 []\cf3 ;\
+\
+  \cf2 var\cf3  \cf6 location\cf3  = \cf6 undefined\cf3 ;\
+  \cf6 if\cf3  (user.latestLoc) \cf2 \{\cf3 \
+    \cf6 if\cf3  (\cf6 typeof\cf3  user.latestLoc === \cf4 'string'\cf3 ) \cf2 \{\cf3 \
+      \cf6 location\cf3  = user.latestLoc;\
+    \cf2 \}\cf3  \cf6 else\cf3  \cf6 if\cf3  (user.latestLoc.join) \cf2 \{\cf3 \
+      \cf6 location\cf3  = user.latestLoc.join(\cf4 ','\cf3 );\
+    \cf2 \}\cf3 \
+  \cf2 \}\cf3 \
+\
+  \cf5 // We do transformations iff the data is as expected\cf3 \
+  \cf6 if\cf3  (is.array(user.selling))\
+    user.selling = user.selling.map(toString).sort().reverse();\
+  \cf6 if\cf3  (is.date(user.createdAt))\
+      user.createdAt = user.createdAt.toISOString();\
+  \cf6 if\cf3  (is.array(user.sold))\
+      user.sold = user.sold.map(toString).sort().reverse();\
+  \cf6 if\cf3  (is.array(user.unlisted))\
+      user.unlisted = user.unlisted.map(toString).sort().reverse();\
+  \cf6 if\cf3  (is.array(user.watching))\
+    user.watching = user.watching.map(toString).sort().reverse();\
+\
+  \cf2 var\cf3  index = \cf2 \{\cf3 \
+    name: \cf2 \{\cf3 \
+      first: user.name,\
+      last: user.lastName,\
+      full: (user.name + \cf4 ' '\cf3  + (user.lastName || \cf4 ''\cf3 )).toLowerCase()\
+    \cf2 \}\cf3 ,\
+\
+    email: user.email,\
+    vanity: user.vanity,\
+\
+    pushToken: user.pushToken,\
+    facebookId: user.facebookId,\
+\
+    createdAt: user.createdAt,\
+\
+    selling: user.selling,\
+    sold: user.sold,\
+    unlisted: user.unlisted,\
+    watching: user.watching,\
+\
+    photo: user.photos.length ? user.photos\cf2 [\cf3 user.photos.length - 1\cf2 ]\cf3  : \cf6 undefined\cf3 ,\
+    \cf6 location\cf3 : \cf6 location\cf3 \
+  \cf2 \}\cf3 ;\
+\
+  \cf6 return\cf3  index;\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf9 \cb10 \}}

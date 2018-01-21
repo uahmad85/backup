@@ -1,0 +1,182 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c0\c0;\csgenericrgb\c100000\c100000\c100000;}
+\margl1440\margr1440\vieww27820\viewh11780\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 # Docker commands and concepts.\
+\
+# Docker repo and Installation instructions:\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf2 \CocoaLigature0 \
+sudo apt-get install apt-transport-https ca-certificates\
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D\
+	1) vi /etc/apt/sources.list.d/docker.list\
+		deb https://apt.dockerproject.org/repo ubuntu-trusty main\
+		save and exit.\
+sudo apt-get update\
+apt-cache policy docker-engine\
+\
+# Docker is a Wrapper on Linux-container-service. Therefor, we need to install some dependencies. \
+sudo apt-get install linux-image-extra-$(uname -r) linux-image-extra-virtual\
+reboot\
+\
+# install Docker\
+$ apt-get update\
+$ apt-get install docker-engine\
+$ dpkg -l docker-engine\
+$ service docker start\
+\
+# Test whether Docker is installed properly.\
+# Following command will pull hello-world image from docker hub if that image is not available locally.\
+$ docker run hello-world\CocoaLigature1  \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \
+# Key Words:\
+\
+Container:\
+	A strip downed Linux box that will only run one job that is assign to it.\
+Images:\
+	preconfigured docker image that we can run to run any command or service.\
+Docker Home:\
+	/var/lib/docker:\
+		contains information about all the running containers and their data/volumes etc.\
+Run Docker as local user:\
+	By default Docker creates a group Called Docker, Any User member of that group can run docker. so add users to that group to allow them to run docker.\
+\
+# Docker help has all the available options that we can use. However, some most commonly used ones are mentioned below.\
+\
+# Display all the available images.\
+$ docker images\
+\
+# Ssh to a running container.\
+$ docker attach container_name\
+\
+# Remove Docker image:\
+$ \CocoaLigature0 docker rmi ubuntu\
+\CocoaLigature1 \
+# Display any running containers.\
+$ docker ps\
+\
+# Display all running and previously ran containers.\
+$ docker ps -a\
+\
+# Docker inspect for information about the container.\
+$ docker inspect container_name/id\
+\
+# Search preconfigured images.\
+$ docker search ubuntu/anything\
+\
+# Running a docker container from an image.\
+  #docker_command #image_name:tag #command_to_run\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf2 \CocoaLigature0 $ docker run -itd ubuntu:trusty /bin/bash\
+\
+# Docker Port Mapping from localhost to the container.\
+$ docker run -d -p localhost_port:container_port (80:80) image_name:tag\
+\
+# Running commands on the container from docker server.\
+$ docker exec container_name <command> <agrument>\
+\
+# Checking what was/is running on the container.\
+$ docker logs container_name\
+\
+# Creating new Docker image. there are two way that you can create docker images.\
+	1) By committing your changes into a container.\
+		## By default any changes made to container are only available in that container. They do not reflect on the image that container was created from.\
+		## However, if you want to save those changes then you need to commit those changes in that container and create an image from it.\
+			$ docker commit \'93commit message\'94 -a \'93author_name\'94 container_name_with_changes new_image_name \CocoaLigature1 \
+	2) By A DockFile.\
+		## Docker Build command can only accept images name in lowercase letters.\
+			$ \CocoaLigature0 docker build -t "sunny/fromdf:v2" -f Dockerfile\
+# DockerFile\
+## To build images from Dockerfile there are a number of directives that we can use in dockerfile.\
+\
+# FROM, image that we want to use to create the new image.\
+# MAINTAINER, the person managing it.\
+# EXPOSE, exposes ports from Dockerfile while building a new container.\
+# CMD to run commands after an image is built.\
+# ENTRYPOINT, if used, the container will only run that one command that is mentioned with entrypoint directive.\
+# USER to change default user for docker.\
+# ENV to set environment variables.\
+# volumes can be managed through Dockerfile as well. \
+\
+# Docker Volume Management.\
+$ docker run -it \'97-name container_name -v file_system_to_be_attached(data_volume):directory_in_container image_name:tag.\
+\
+# Docker Network Management.\
+## Docker uses bridge network by default.\
+Something like 172.17.0.1 \
+\
+# Display available networks.\
+$ docker network ls\
+\
+# Create new bridge adapter for more control on ip assignments to your container. Blow example will create a new bridge network adapter named frontbr01.\
+$ docker network create \'97-subnet 10.0.0.0/16 \'97-gateway 10.0.0.1 \'97ip-range 10.0.1.0/24 \'97-label frontend frontbr01\
+\
+# Assign a static ip address.\
+$ docker run -it --name checking_ip --net frontbr01 --ip 10.0.1.10 first_images:v1 /bin/bash\
+\
+# Start Swarm cluster, run the out put command to worker nodes\
+docker swarm init --advertise-addr 172.31.26.185\
+docker info\
+docker node ls\
+\
+# Create service with One replica\
+docker service create --replicas 1 --name helloworld alpine ping docker.com\
+docker service ls\
+docker info\
+docker node ls\
+\
+# Inspect service for more details\
+docker service inspect --pretty helloworld\
+docker service ps helloworld\
+docker ps\
+\
+# Scale service up or down\
+docker service scale helloworld=3\
+docker service ps helloworld\
+docker ps\
+\
+# Remove a service\
+docker service rm helloworld\
+docker service ps helloworld\
+docker ps\
+\
+# Deploying One particular version and rolling updates\
+docker service create --replicas 3 --name redis --update-delay 10s redis:3.0.6\
+docker service inspect --pretty redis\
+docker service update --image redis:3.0.7 redis\
+watch -n 1 docker ps\
+docker service ps redis\
+docker node ls\
+\
+# Swarm route mesh\
+docker service create --replicas 2 --name web --publish 8080:80 --update-delay 10s nginx\
+docker service ps web\
+docker service inspect web\
+\
+# For demo\
+curl 54.183.167.238:8080\
+curl 54.193.115.40:8080\
+curl 13.56.157.190:8080\
+\
+# installing Docker ce \
+    4  apt-get install     linux-image-extra-$(uname -r)     linux-image-extra-virtual\
+    5  apt-get install     apt-transport-https     ca-certificates     curl     software-properties-common\
+    6  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -\
+    7  cat /etc/hostname \
+    8  hostname `cat /etc/hostname` && exec bash\
+    9  sudo apt-key fingerprint 0EBFCD88\
+   10  lsb_release -cs\
+   11  apt-update\
+   12  apt-get update \
+   13  apt-cache madison docker-ce\
+   14  apt-get install docker-ce\
+   15  apt-get update\
+   16  cd /etc/apt/sources.list\
+   17  cd /etc/apt/sources.list.d/\
+\
+\
+}

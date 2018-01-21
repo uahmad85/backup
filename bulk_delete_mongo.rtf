@@ -1,0 +1,43 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\froman\fcharset0 Times-Roman;\f2\fmodern\fcharset0 Courier;
+}
+{\colortbl;\red255\green255\blue255;\red245\green245\blue247;\red33\green34\blue36;\red247\green247\blue247;
+\red190\green7\blue68;\red242\green242\blue242;\red0\green0\blue0;}
+\margl1440\margr1440\vieww28300\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf0 \CocoaLigature0 var bulk = db.items.initializeUnorderedBulkOp();\
+bulk.find(
+\fs24 \cb2 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \{resolvedAt: \{
+\fs28 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0  
+\fs24 \cb2 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $exists: true \} \}
+\fs28 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 ).remove();\
+bulk.execute();\
+\
+\pard\pardeftab720
+
+\f1\fs30 \cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\pardeftab720
+\cf3 \cb4 \expnd0\expndtw0\kerning0
+for i in
+\f0\fs24 \cf0 \cb1 \expnd0\expndtw0\kerning0
+ \cf5 \cb2 `cat x`
+\f1\fs30 \cf3 \cb4 \expnd0\expndtw0\kerning0
+;\
+do\
+    echo $i; time echo -e "use EntityLog; db.entityLog.remove(\{"entity_class" : "Ad", "creation_date": \{$lte: ISODate($\{i\}T00:00:00Z)\}\})" | mongo; sleep $(cat /tmp/secs);\
+done\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf6 \cb0 \kerning1\expnd0\expndtw0 \CocoaLigature0 9914677\
+\
+\
+\pard\pardeftab720
+
+\f2\fs24 \cf7 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec7  /usr/bin/cloud-init-run-module always user-scripts execute run-parts $\{SCRIPT_DIR\} >/dev/null && success || failure\
+}

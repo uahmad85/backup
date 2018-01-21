@@ -1,0 +1,35 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red242\green242\blue242;}
+\margl1440\margr1440\vieww16860\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 \cb0 \CocoaLigature0 #data node settings\
+action.auto_create_index: true\
+action.disable_delete_all_indices: true\
+bootstrap.mlockall: true\
+cluster.name: close5-production\
+discovery.zen.minimum_master_nodes: 2\
+discovery.zen.ping.multicast.enabled: false\
+discovery.zen.ping.timeout: 3s\
+discovery.zen.ping.unicast.hosts: ["ip-172-31-25-15.us-west-1.compute.internal", "ip-172-31-30-53.us-west-1.compute.internal", "ip-172-31-30-172.us-west-1.compute.internal", "es-data-10.prod.close5.com", "es-data-11.prod.close5.com", "es-data-12.prod.close5.com", "es-data-13.prod.close5.com", "es-data-14.prod.close5.com", "es-data-15.prod.close5.com"]\
+http.port: 9200\
+index.number_of_replicas: 2\
+index.number_of_shards: 20\
+network.bind_host: 0.0.0.0\
+network.publish_host: 172.31.5.44\
+node.data: true\
+node.master: false\
+node.max_local_storage_nodes: 1\
+node.name: es-data-15\
+path.conf: /etc/elasticsearch\
+path.data: /var/lib/elasticsearch\
+path.logs: /var/log/elasticsearch\
+path.plugins: /usr/share/elasticsearch/plugins\
+path.scripts: /etc/elasticsearch/scripts\
+path.work: /tmp/elasticsearch\
+script.disable_dynamic: false\
+transport.tcp.compress: true\
+transport.tcp.port: 9300\
+I\
+Unable to lock JVM memory (ENOMEM). This can result in part of the JVM being swapped out. Increase RLIMIT_MEMLOCK (ulimit).}

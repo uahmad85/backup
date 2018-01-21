@@ -1,0 +1,80 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww28600\viewh15380\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs26 \cf0 ##CookBooks with knife\
+\
+#create chef cookbook\
+knife cookbook create <name>\
+\
+#upload a cookbook to chef-server\
+chef cookbook upload <name>\
+\
+##run_list \
+#add to run_list of a node\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \CocoaLigature0 knife node run_list add shiraz1102.mylabserver.com "recipe[motd]"\CocoaLigature1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+##knife bootstrap a node\
+knife bootstrap <node_name> -x username -P password -n <alias_for_node>\
+\pard\pardeftab720
+
+\f1\fs24 \cf0 \expnd0\expndtw0\kerning0
+knife bootstrap  -x ubuntu -i ~/.ssh/id_rsa -N client1 --sudo
+\f0\fs26 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+#search with knife key:pattern based search.\
+knife search node \'91os:linux\'92\
+\
+#to grab a particular attribute from a node object in the search.\
+knife search node \'92os:linux\'92 -a platform\
+\
+#for nested search listed \'94to check the value of an attribute of the attribute\'94\
+knife node show node_name -a<the value to return> key\
+\
+#search from the data bags\
+knife search users \'93id:admin\'94 -a\
+\
+#after populating the data bag we need to create this bag in chef server.\
+knife data bag <create directory_name> users\
+\
+#syntax to upload a data bag file.json from the directory we recently create in chef server .\
+knife data_bag from file users admin.json\
+knife data_bag from file groups admin.json\
+\
+#Add an env with knife\
+in order to create an environment in chef, create a new directory /chef-repo/environment.\
+then create a file for each environment.\
+\
+#to upload env file to chef-server\
+knife environment from file env.rb\
+\
+#how to check available evn?\
+knife environment list -w\
+\
+#how to compare recipes in different env\
+\
+knife environment compare dev (this will compare dev with default env)\
+knife environment compare dev prod (this will compare dev with prod env)\
+knife environment compare \'97all (this will compare all the env)\
+knife environment delete dev (this will remove dev)\
+\
+#Roles with knife, to create a role\
+knife role create role_name\
+\
+#then create a file with the same name as role\
+touch /chef-repo/roles/rolename.rb\
+\
+#add a role to a server\
+knife node run_list add node_name \'93role[webserver]\'94\
+\
+#check all the available roles.\
+knife role list -w\
+knife role delete role_name. \expnd0\expndtw0\kerning0
+\
+}

@@ -1,0 +1,351 @@
+#!/usr/bin/env python
+import boto3
+import sys
+import os
+from ConfigParser import SafeConfigParser
+from time import sleep
+import argparse
+
+default_image = 'ami-030f4133'
+default_inst_type = 't1.micro'
+
+parser = argparse.ArgumentParser(description='Usage: create_env.py -e <environment> -r <region>')
+parser.add_argument('-i', '--image', action='store', help='Image Id to be use, default is ' + default_image)
+parser.add_argument('-t', '--type', action='store', help='Instance type to be used, default is ' + default_inst_type)
+parser.add_argument('-e', '--environment', action='store', help='environment name')
+parser.add_argument('-n', '--number_of_instances', action='store', type=int, help='number of instances, prod use only.')
+parser.add_argument('-r', '--region', action='store', help='region to setup Env in. '
+                                                           'Default region is set in your ~/HOME/.aws/config')
+parser.add_argument('-d', '--delete', action='store', help='delete instance')
+results = parser.parse_args()
+
+parser = SafeConfigParser()
+user_home = os.environ.get('HOME')
+aws_config_file = user_home + '/.aws/config'
+aws_access_file = user_home + '/.aws/credentials'
+
+access_keys_and_region_not_found = "Please make sure that both files %s and %s exist " \
+                                   "\nand have region, aws_access_key_id and aws_secret_access_key configured properly." \
+                                   "\nIf both of these files exists and you still seeing this message." \
+                                   "\nPlease contact with your administrator for proper privileges." \
+                                   "\nif you have awscli installed, please execute 'aws configure' command and follow the instructions." \
+                                   "\n[default] " \
+                                   "\nregion=region_name" % (aws_access_file, aws_config_file)
+
+if not os.path.isfile(aws_access_file):
+    print "Access Keys not founnd. " + access_keys_and_region_not_found
+    sys.exit()
+
+if not os.path.isfile(aws_config_file):
+    print "Region not founnd " + access_keys_and_region_not_found
+    sys.exit()
+
+
+def get_region(aws_config_file):
+    region = {}
+    parser = SafeConfigParser()
+    parser.read(aws_config_file)
+    for sec in parser.sections():
+        for key, val in parser.items(sec):
+            region[key] = val
+        return region
+
+if results.region:
+    cur_region = results.region
+else:
+    config_region = get_region(aws_config_file)
+    cur_region = config_region['region']
+
+print config_region
+
+session = boto3.Session(region_name=cur_region)
+
+from tag_resources import ResTags
+resource_session = session.resource('ec2')
+client_session = session.client('ec2')
+user_data_file = '/Users/sunahmad/bootstrap.py'
+fh = open(user_data_file)
+aws_stack_info = {}
+
+vlans = ['10.0.1.0/24', '10.0.2.0/24', '10.0.3.0/24', '10.0.4.0/24']
+
+core_api_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'core-api'},]
+image_server_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'image-server'},]
+consumer_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'consumer'},]
+mongodb_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'mongodb'},]
+es_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'elasticsearch'},]
+nat_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'nat-instance'},]
+
+vpc_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'close5-' + results.environment},]
+
+default_sg_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'default for all the instances'},]
+
+nat_sg_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'nat security group for DBs'},]
+
+pub_tag01 = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'public01'},]
+
+pri_tag01 = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'private01'},]
+
+pub_tag02 = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'public02'},]
+
+pri_tag02 = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'private02'},]
+
+ig_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'InternetGateway'},]
+
+rt_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'RouteTable with InternetGateway'},]
+
+nat_rt_tag = Tags=[
+    {
+        'Key': 'Name',
+        'Value': 'RouteTable with NatGateway'},]
+
+
+print "     AWS Region: ", cur_region
+
+
+def get_sub_id_from_tag(sub_tag, client_session=client_session):
+    alls = client_session.describe_subnets()
+    for sub in alls['Subnets']:
+        if 'Tags' in sub.keys():
+            if sub_tag in sub['Tags'][0].values():
+                return sub['SubnetId']
+
+
+def create_vpc(resource_session, dryrun=True):
+    vpc = resource_session.create_vpc(DryRun=dryrun,
+                                      CidrBlock='10.0.0.0/16',
+                                      InstanceTenancy='default')
+    return vpc
+
+vpc = create_vpc(resource_session, dryrun=False)
+vpc_id = [vpc][0].id
+waiter = client_session.get_waiter('vpc_available')
+waiter.wait(DryRun=False, VpcIds=[vpc_id])
+
+tag_vpc = ResTags(resource_session).tag_vpc(False, vpc_id, vpc_tag)
+vpc_con = resource_session.Vpc(vpc_id)
+sg_list = list(vpc_con.security_groups.all())
+default_sg = sg_list[0].id
+
+tag_sg = ResTags(resource_session).tag_securitygroup(False, default_sg, default_sg_tag)
+print tag_sg
+print tag_vpc
+
+
+def get_availability_zones(client_session):
+    az_list = []
+    zones = client_session.describe_availability_zones()
+    for zone in zones['AvailabilityZones']:
+        az_list.append(zone['ZoneName'])
+    return az_list
+
+avail_zones = get_availability_zones(client_session)
+print "Availability Zones: ", avail_zones
+
+
+def mk_subnet(resource_session, vpcid, dryrun=True, cidrblk='10.0.1.0/24', az='us-west-2a'):
+    subnet = resource_session.create_subnet(DryRun=dryrun, VpcId=vpcid,
+                                                CidrBlock=cidrblk, AvailabilityZone=az)
+    return subnet
+
+for index in range(len(avail_zones)):
+    subnets = mk_subnet(resource_session, vpc_id, False, vlans[index], az=avail_zones[index])
+
+vpc_con = resource_session.Vpc(vpc_id)
+subnets_list = list(vpc_con.subnets.all())
+
+
+def apply_tag(start, stop, tag, subnets_list, dryrun=True):
+    for n in range(start, stop):
+        sub_tag = ResTags(resource_session).tag_subnet(dryrun, subnets_list[n].id, tag)
+    return sub_tag
+
+print apply_tag(0, 1, pub_tag01, subnets_list, dryrun=False)
+print apply_tag(1, 2, pub_tag02, subnets_list, dryrun=False)
+print apply_tag(2, 3, pri_tag01, subnets_list, dryrun=False)
+
+if cur_region == 'us-west-1':
+    pri_sub02 = apply_tag(3, 4, pri_tag, subnets_list, dryrun=False)
+
+internet_gateway = resource_session.create_internet_gateway()
+sleep(2)
+internet_gateway_id = [internet_gateway][0].id
+tag_ig = ResTags(resource_session).tag_internetgateway(False, internet_gateway_id, ig_tag)
+print tag_ig
+
+
+def attach_ig(vpc_con, igid):
+    response = vpc_con.attach_internet_gateway(DryRun=False,
+                                               InternetGatewayId=igid)
+    return response
+
+print attach_ig(vpc_con, internet_gateway_id)
+
+
+def create_routetable(vpcid, resource_session=resource_session):
+    routetable = resource_session.create_route_table(VpcId=vpcid)
+    return routetable
+
+table_id = create_routetable(vpc_id)
+tag_rt = ResTags(resource_session).tag_routetable(False, [table_id][0].id, rt_tag)
+print tag_rt
+
+
+def create_route(rt_id, cidrblock='0.0.0.0/0', igid=internet_gateway_id):
+    route = resource_session.RouteTable(rt_id)
+    ig_route = route.create_route(DestinationCidrBlock=cidrblock, GatewayId=igid)
+    return ig_route
+
+print create_route([table_id][0].id)
+
+
+def associate_with_subnet(table_id, subnetid):
+    routetable = resource_session.RouteTable(table_id)
+    response = routetable.associate_with_subnet(SubnetId=subnetid)
+    return response
+
+for subnets in ['public01', 'public02']:
+    print associate_with_subnet([table_id][0].id, get_sub_id_from_tag(subnets))
+
+
+def create_security_group(vpc_con, group_name):
+    sg = vpc_con.create_security_group(GroupName=group_name,
+                                       Description='Security Group for DB instances')
+    return sg
+
+nat_sg = create_security_group(vpc_con, 'close5-dev-nat')
+nat_sgid = [nat_sg][0].id
+sleep(1)
+tag_nat_sg = ResTags(resource_session).tag_securitygroup(False, nat_sgid, nat_sg_tag)
+print tag_nat_sg
+
+
+def create_ingress_rules(resource_session, sgid=nat_sgid, from_port=80, to_port=80, cidr='172.31.0.0/16'):
+    sg = resource_session.SecurityGroup(sgid)
+    reponse = sg.authorize_ingress(IpProtocol="tcp", FromPort=from_port, ToPort=to_port, CidrIp=cidr)
+    return reponse
+
+print create_ingress_rules(resource_session)
+print create_ingress_rules(resource_session, from_port=27017, to_port=27017)
+print create_ingress_rules(resource_session, from_port=22, to_port=22, cidr='10.0.0.0/0')
+
+
+def create_instance(subnet_id, inst_type, resource_session=resource_session, dryrun=False,
+                    image_id='ami-9abea4fb', maxcount=1, sshkey='close5-dev', instance_sg='default', public_ip=False):
+    instance = resource_session.create_instances(DryRun=dryrun, ImageId=image_id, MinCount=1,
+                                                 MaxCount=maxcount, KeyName=sshkey, InstanceType=inst_type,
+                                                 NetworkInterfaces=[{'DeviceIndex': 0, 'SubnetId': subnet_id,
+                                                                     'Groups': [instance_sg],
+                                                                     'AssociatePublicIpAddress': public_ip}])
+    return instance
+nat_instance = create_instance(image_id='ami-030f4133', inst_type='t1.micro',
+                               subnet_id=get_sub_id_from_tag('public01'),
+                               instance_sg=nat_sgid, public_ip=True)
+
+nat_instance_id = nat_instance[0].id
+waiter = client_session.get_waiter('instance_running')
+waiter.wait(DryRun=False, InstanceIds=[nat_instance_id])
+
+
+def get_network_ifc_id(resource_session=resource_session,
+                       nat_instance_id=nat_instance_id):
+    instance = resource_session.Instance(nat_instance_id)
+    all_attri = instance.network_interfaces_attribute
+    for eni_id in all_attri:
+        return eni_id['NetworkInterfaceId']
+
+eni = get_network_ifc_id()
+response = client_session.modify_network_interface_attribute(NetworkInterfaceId=eni,
+                                                             SourceDestCheck={'Value': False})
+print response
+
+tag_nat_inst = ResTags(resource_session).tag_instance(False, nat_instance_id, nat_tag)
+print tag_nat_inst
+
+nat_table = create_routetable(vpc_id)
+nat_table_id = [nat_table][0].id
+sleep(1)
+nat_tag_rt = ResTags(resource_session).tag_routetable(False, nat_table_id, nat_rt_tag)
+
+print nat_tag_rt
+
+
+def create_route(rt_id, nat_inst_id, cidrblock='0.0.0.0/0'):
+    route = resource_session.RouteTable(rt_id)
+    ig_route = route.create_route(DestinationCidrBlock=cidrblock, RouteTableId=nat_table_id,
+                                  InstanceId=nat_inst_id)
+    return ig_route
+
+print create_route(nat_table_id, nat_instance_id)
+
+for subnets in ['private01']:
+    print associate_with_subnet(nat_table_id, get_sub_id_from_tag(subnets))
+
+com_tags = [ core_api_tag, image_server_tag, consumer_tag, es_tag]
+
+
+if results.environment == 'dev':
+    instance_pub = create_instance(inst_type='t2.micro', subnet_id=get_sub_id_from_tag('public01'),
+                                   maxcount=4, instance_sg=nat_sgid, public_ip=False)
+    instance_pri = create_instance(inst_type='t2.micro', subnet_id=get_sub_id_from_tag('private01'),
+                                   maxcount=1, instance_sg=nat_sgid, public_ip=False)
+
+if results.environment == 'staging':
+    instance_pub = create_instance(inst_type='t2.micro', subnet_id=get_sub_id_from_tag('public01'),
+                                   maxcount=4, instance_sg=nat_sgid, public_ip=False)
+    instance_pri = create_instance(inst_type='t2.micro', subnet_id=get_sub_id_from_tag('private01'),
+                                   maxcount=1, instance_sg=nat_sgid, public_ip=False)
+
+for x in range(len(instance_pub)):
+    waiter.wait(DryRun=False, InstanceIds=[instance_pub[x].id])
+    tag_pub_inst = ResTags(resource_session).tag_instance(False, instance_pub[x].id, com_tags[x])
+    print tag_pub_inst
+
+tag_pri_inst = ResTags(resource_session).tag_instance(False, instance_pri[0].id, mongodb_tag)
+
+print tag_pri_inst

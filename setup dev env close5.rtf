@@ -1,0 +1,830 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red50\green98\blue178;\red19\green36\blue126;
+\red148\green6\blue75;\red14\green114\blue164;\red101\green71\blue146;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid1\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid101\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid102\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid201\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid301\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid401\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid5}
+{\list\listtemplateid6\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid501\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid6}
+{\list\listtemplateid7\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid601\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid7}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}{\listoverride\listid6\listoverridecount0\ls6}{\listoverride\listid7\listoverridecount0\ls7}}
+\margl1440\margr1440\vieww14120\viewh10660\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\b\fs72 \cf2 \expnd0\expndtw0\kerning0
+Step by step Close5 Configuration on you local machine.\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+There are three main components of Close5 application, and their entire code is in three git repositories.\
+\
+1 - Core-api	(Core-api is the front-end for the bulk of the Close5 REST API)\
+2 - Image Server	(Provides a few image-related end-points)\
+3 - consumer	(Display new items on the discovery screen)\
+\
+\pard\pardeftab720
+
+\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+Installing Dependencies:\
+1 - Install Xcode \
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls1\ilvl0
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Download and install {\field{\*\fldinst{HYPERLINK "https://developer.apple.com/xcode/download/"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+XCode}}, to run and compile the iOS client and run simulator. Once you have Xcode installed, open a terminal, run 
+\f1\fs28 \expnd0\expndtw0\kerning0
+xcode-select --install
+\f0\fs32 \expnd0\expndtw0\kerning0
+, and click the Install button to install the required command line developer tools. Don't worry if yousee messag tellingyou the software cannot be installed because it is not currently available from the Software Update Server. This usually means you already have the latest version installed. {\field{\*\fldinst{HYPERLINK "https://nodejs.org/en/download/releases/"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+downloads}} page.\
+\pard\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+2 - Git and Gitflow\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Though git comes with XCode, you may want a newer version. Also, you will want gitflow, which we use in our development:\
+\pard\tx720\pardeftab720
+{\field{\*\fldinst{HYPERLINK "https://git-scm.com/"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+git}}\expnd0\expndtw0\kerning0
+: \
+\pard\tx720\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+	$ brew install git
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+{\field{\*\fldinst{HYPERLINK "https://github.com/nvie/gitflow"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+gitflow}}: \
+
+\f1\fs28 \expnd0\expndtw0\kerning0
+	$ brew install git-flow\
+\pard\pardeftab720
+
+\f0\b\fs56 \cf2 \kerning1\expnd0\expndtw0 3 - \expnd0\expndtw0\kerning0
+Install Homebrew for easy package management\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Brew is a command line tool for mac OS to install packages. \
+	$ 
+\f1 \expnd0\expndtw0\kerning0
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+\f0 \expnd0\expndtw0\kerning0
+\
+Once installed run:\
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+\
+	$ brew update\
+	$ brew upgrade\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\
+You may need to preface 
+\f1\fs28 \expnd0\expndtw0\kerning0
+sudo
+\f0\fs32 \expnd0\expndtw0\kerning0
+ before the previous commands.\
+\pard\tx720\pardeftab720
+
+\b\fs48 \cf2 \expnd0\expndtw0\kerning0
+\
+4 - Add Homebrow to your PATH\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+To add Homebrow to your path run the following command:\
+	$ export PATH=$PATH:/usr/local/bin\
+	$ export PATH=$PATH:/usr/local/sbin\
+Or you can add the following lines in /etc/paths file as well.\
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+	/usr/local/bin\
+	/usr/local/sbin\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Well, near the top. At least above 
+\f1\fs28 \expnd0\expndtw0\kerning0
+/usr/bin
+\f0\fs32 \expnd0\expndtw0\kerning0
+, 
+\f1\fs28 \expnd0\expndtw0\kerning0
+/bin
+\f0\fs32 \expnd0\expndtw0\kerning0
+, 
+\f1\fs28 \expnd0\expndtw0\kerning0
+/sbin
+\f0\fs32 \expnd0\expndtw0\kerning0
+ etc. You can also use paths to manage different versions of Node.js.\
+However, after you edit 
+\f1\fs28 \expnd0\expndtw0\kerning0
+/etc/paths
+\f0\fs32 \expnd0\expndtw0\kerning0
+ you must create a new shell to have the 
+\f1\fs28 \expnd0\expndtw0\kerning0
+PATH
+\f0\fs32 \expnd0\expndtw0\kerning0
+ environment variable be updated.\
+\pard\pardeftab720
+
+\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\fs48 \cf2 \expnd0\expndtw0\kerning0
+5 - Setup sudo less access to Homebrew (optional)\
+\pard\pardeftab720
+
+\i\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Note
+\i0 \expnd0\expndtw0\kerning0
+: With Homebrew and NPM, Your life will be much easier if you own and set /usr/local to writable by yourself.\
+Enter the following commands:\
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+	$ sudo chown -R \cf4 \expnd0\expndtw0\kerning0
+`whoami`\cf2 \expnd0\expndtw0\kerning0
+ /usr/local\
+	$ sudo chmod -R u+w /usr/local\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\
+Now that you can write to /usr/local, you do not have to type 
+\f1\fs28 \expnd0\expndtw0\kerning0
+sudo
+\f0\fs32 \expnd0\expndtw0\kerning0
+ when installing NPM modules globally nor do you need to use sudo with brew.\
+\pard\tx720\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+\
+\pard\tx720\pardeftab720
+
+\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+After installing dependencies now your are ready to setup your dev env\
+\pard\tx720\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\b\fs52 \cf2 \expnd0\expndtw0\kerning0
+OS Environment and directory setup
+\fs72 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+1 - Please create a environment variable NODE_ENV  and set to 
+\f1\fs28 \expnd0\expndtw0\kerning0
+development
+\f0\fs32 \expnd0\expndtw0\kerning0
+ in your local machine.\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+\cf2 \expnd0\expndtw0\kerning0
+	$ export NODE_ENV=\'91development\'92\
+\
+2 - To make this change presistent across reboots, add this variable to your .bashrc file.\
+	$ echo \'93export NODE_ENV=\'91development\'92\'94 >> ~/.bashrc && source ~/.bashrc\
+\
+3 - create directory to hold your close5 configuration.\
+
+\f1\fs28 \expnd0\expndtw0\kerning0
+	$ mkdir \cf5 \expnd0\expndtw0\kerning0
+~\cf2 \expnd0\expndtw0\kerning0
+/close5\
+	$ cd \cf5 \expnd0\expndtw0\kerning0
+~\cf2 \expnd0\expndtw0\kerning0
+/close5
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+
+\b\fs56 \expnd0\expndtw0\kerning0
+\
+Get core-api and Other Key Repositories
+\b0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+The following repositories enable you to run the Close5 backend, plus the mobile client from your local machine.\
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+Enter your username and password when prompted:\
+\
+	$ git clone https://github.com/Close5/core-api.git\
+	$ git clone https://github.com/Close5/consumer.git\
+	$ git clone https://github.com/Close5/images-server.git\
+	$ git clone https://github.com/Close5/scripts.git\
+	$ git clone https://github.com/Close5/ios.git\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\
+The config file for the Core API is set to use ElastiSearch, MongoDB and Redis locally. The same is true for the image-server, scripts and consumer, as well. If you run into problems, it may be an oversight in this documentation, so let's try to fix it.\
+You need a custom configuration file in each component directory, copy the config file config.js from your home directory ~/close5/<component_name>/config.js and create a new file called: 
+\f1\fs28 \expnd0\expndtw0\kerning0
+config.[NODE_ENV].js. Where 
+\f0\fs32 \expnd0\expndtw0\kerning0
+NODE_ENV is 'development\'92 in your case. However, the filename would be 
+\f1\fs28 \expnd0\expndtw0\kerning0
+config.development.js
+\f0\fs32 \expnd0\expndtw0\kerning0
+. Note, config.development.js is in your 
+\f1\fs28 \expnd0\expndtw0\kerning0
+.gitignore
+\f0\fs32 \expnd0\expndtw0\kerning0
+. So, feel free to customize your config.development.js file as needed.\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+
+\f0\b\fs48 \cf2 \expnd0\expndtw0\kerning0
+Install node js and npm modules:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+
+\f1\b0\fs28 \cf2 \expnd0\expndtw0\kerning0
+\
+$ brew install homebrew/versions/node012
+\f0\b\fs56 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Now globally install the following NPM modules:\
+\pard\pardeftab720
+\cf3 \kerning1\expnd0\expndtw0 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls2\ilvl0{\field{\*\fldinst{HYPERLINK "https://www.npmjs.com/package/gulp"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+Gulp}}\cf2 \expnd0\expndtw0\kerning0
+: \
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440
+\ls2\ilvl1\cf2 \kerning1\expnd0\expndtw0         \expnd0\expndtw0\kerning0
+$ npm install -g gulp\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls2\ilvl0{\field{\*\fldinst{HYPERLINK "https://www.npmjs.com/package/jshint"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+jshint}}\expnd0\expndtw0\kerning0
+: \
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls2\ilvl0\cf2 \kerning1\expnd0\expndtw0 		\expnd0\expndtw0\kerning0
+$ npm install -g jshint\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls2\ilvl0{\field{\*\fldinst{HYPERLINK "https://www.npmjs.com/package/nodemon"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+nodemon}}: \
+		$ npm install -g nodemon\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+
+\b\fs48 \cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+Confirm Node is Correctly Installed\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Ensure node and npm are in your path with the command:\
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+	$ which node\
+	$ which npm\
+\
+\pard\pardeftab720
+
+\f0\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+Install Packages for all the services required by the application:\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Now install the following packages using Homebrew with the command: 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew install <packagename>
+\f0\fs32 \expnd0\expndtw0\kerning0
+:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+{\field{\*\fldinst{HYPERLINK "http://www.imagemagick.org/script/index.php"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+imagemagick}}\expnd0\expndtw0\kerning0
+:\
+	$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew install imagemagick
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls3\ilvl0{\field{\*\fldinst{HYPERLINK "http://redis.io/"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+redis}}\expnd0\expndtw0\kerning0
+:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls3\ilvl0\cf2 \kerning1\expnd0\expndtw0 	\expnd0\expndtw0\kerning0
+$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew install redis
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls3\ilvl0{\field{\*\fldinst{HYPERLINK "https://www.mongodb.org/"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+mongoDB}}:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls3\ilvl0\cf2 \kerning1\expnd0\expndtw0 	\expnd0\expndtw0\kerning0
+$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew install mongodb
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls3\ilvl0{\field{\*\fldinst{HYPERLINK "https://www.elastic.co/"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+elasticsearch}}:\
+	$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew install elasticsearch17\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls3\ilvl0
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+		Add the following settings at the bottom of your file \cf0 \expnd0\expndtw0\kerning0
+(
+\f2\fs28 \kerning1\expnd0\expndtw0 \CocoaLigature0 /usr/local/Cellar/elasticsearch17/1.7.4/config/elasticsearch.yml
+\f0\fs32 \expnd0\expndtw0\kerning0
+\CocoaLigature1 ) location of this file may very in your system.
+\fs28 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+\cf0 		script.engine.groovy.inline.search: on\
+		script.engine.groovy.inline.aggs: on\
+		script.groovy.sandbox.enabled: true\
+		script.lang: groovy\
+		script.inline: on\
+		script.indexed: on\
+		script.search: on\
+		script.file: on\
+\
+
+\b\fs48 \cf2 \expnd0\expndtw0\kerning0
+\CocoaLigature1 For easy Management of all the services
+\fs32 :
+\b0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+To easily start and stop services such as EastiSearch, Redis, and MongoDB, install Homebrew's services tool:\
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+	$ brew tap homebrew/services\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\
+In addition to restart, there is start and stop action too. \
+Run the following command to see the help screen describing how to use it\
+	$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew services\
+
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+Run the following commands to restart services.\
+\
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+	$ brew services restart redis\
+	$ brew services restart elastisearch17\
+	$ brew services restart mongodb
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\i \cf2 \expnd0\expndtw0\kerning0
+\
+NOTE
+\i0 \expnd0\expndtw0\kerning0
+: The gulpfile tasks assume you installed with brew and have brew services installed. If you installed the dependencies in another way, perhaps you could extend the gulpfile to support your configuration?\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls4\ilvl0\cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+Gulp\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+To automate certain tasks, like using JSHint, restoring the redis rdb and mongodb, we use {\field{\*\fldinst{HYPERLINK "https://www.npmjs.com/package/gulp"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+Gulp}}. To find out more about Gulp type 
+\f1\fs28 \expnd0\expndtw0\kerning0
+gulp
+\f0\fs32 \expnd0\expndtw0\kerning0
+ in the core-api repo.\
+$ gulp\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls5\ilvl0
+\f1\fs28 \cf2 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - describes the available tasks (the default task)\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp elastisearch_index
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - indexes the data in mongo db.\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp elastisearch_init
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - creates the index and mappings.\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp elastisearch_wipe
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - deletes the close5 index\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp help
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - this page of information\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp lint
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - Uses jshint to lint the source code.\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp mongo_restore
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - restores a mongo dump to your local mongo instance.\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp mongo_wipe
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - drops the stage5 closing db.\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp redis_restore
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - restores a redis rdb file to your local redis instance.\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp redis_wipe
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - deletes all keys.\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp restore_all
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - runs all the tasks to set up data for local running.\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp run
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - runs core-api\
+\ls5\ilvl0
+\f1\fs28 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+gulp wipe_all
+\f0\fs32 \expnd0\expndtw0\kerning0
+ - removes all data\
+\pard\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+Gulp notes:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls6\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+The gulpfile assumes you installed your dependencies, e.g. redis and mongodb, etc. using Homebrew. If you did not, consider extending the gulpfile to support your setup.\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+elastisearch_index assumes you have the the scripts repo checked out and in a relative path from core-api: ../scripts. This is required for the elastisearch_index command to work.\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+to run 
+\f1\fs28 \expnd0\expndtw0\kerning0
+gulp elastisearch_index
+\f0\fs32 \expnd0\expndtw0\kerning0
+ you need to do an 
+\f1\fs28 \expnd0\expndtw0\kerning0
+npm install
+\f0\fs32 \expnd0\expndtw0\kerning0
+ in ../scripts.\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+to run 
+\f1\fs28 \expnd0\expndtw0\kerning0
+gulp lint
+\f0\fs32 \expnd0\expndtw0\kerning0
+ you should have jshint installed globally with 
+\f1\fs28 \expnd0\expndtw0\kerning0
+npm install -g jshint
+\f0\fs32 \expnd0\expndtw0\kerning0
+.\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+to run gulp, you should have gulp installed globally with 
+\f1\fs28 \expnd0\expndtw0\kerning0
+npm install -g gulp
+\f0\fs32 \expnd0\expndtw0\kerning0
+.\
+\pard\pardeftab720
+
+\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+\
+Restore Mongodb server\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Ask Edmon or Jaime for testing data and restore your mongodb with that.\
+	run the following commands to restore the close5-dev database.\
+		$ mongo (to login and access the interactive shell of mongodb)\
+		$ use close5-dev (it will create close5-dev database if does not exist)\
+		$ exit() (exit out to preform the restore)\
+		$ tar -xvzf <dump_file_name.tar.gz>\
+		$ mongorestore -d close5-dev <dir_name_with_data_files>\
+\
+These steps will upload all the data from files in the dump directory to mongodb.\
+To verify that the database is populated correctly run:\
+		$ mongo\
+		$ use close5-dev\
+		$ show collections\
+If this command return some data then your database is ready to be used.\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls7\ilvl0\cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\b\fs48 \cf2 \expnd0\expndtw0\kerning0
+Restore redis server\
+\pard\tx720\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Obtain the redis.rdb and Mongp ./dump directories from Edmond, Jamie or Dylan.\
+To make it easy, keep the redis.rdb and the ./dump directory in ~/Downloads. (You can change this later.)\
+\pard\tx720\pardeftab720
+\cf2 \kerning1\expnd0\expndtw0 \
+\
+
+\b\fs52 Once the redis servers has its data, Now you are ready to launch the application, start all component one by one.
+\b0\fs32 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\cf2 \expnd0\expndtw0\kerning0
+Run the following command:\
+		$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+gulp restore_all (to perform all the following mentioned tasks at Once)\
+
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+If 
+\f1\fs28 \expnd0\expndtw0\kerning0
+gulp restore_all
+\f0\fs32 \expnd0\expndtw0\kerning0
+ does not work, then do the following steps manually:\
+\pard\tx720\pardeftab720
+
+\f1\fs28 \cf2 \kerning1\expnd0\expndtw0 	$ \expnd0\expndtw0\kerning0
+gulp wipe_all
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx720\pardeftab720
+
+\f1\fs28 \cf2 \expnd0\expndtw0\kerning0
+	$ gulp redis_restore
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+
+\f1\fs28 \expnd0\expndtw0\kerning0
+	$ gulp mongo_restore
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+
+\f1\fs28 \expnd0\expndtw0\kerning0
+	$ gulp elastisearch_init
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+
+\f1\fs28 \expnd0\expndtw0\kerning0
+	$ gulp elastisearch_index\
+\
+Once all these steps are complete. It means that all your configurations and requirements are good and application can be started now. (IF YOU HAVE ANY ISSUES PLEASE CONTACT EDMON OR DYLAN)\
+\pard\tx720\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+Compile and run NPM Modules\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Now install the NPM modules and start the component.\
+\pard\pardeftab720
+
+\f1\fs28 \cf6 \expnd0\expndtw0\kerning0
+	$ cd\cf2 \expnd0\expndtw0\kerning0
+ \cf5 \expnd0\expndtw0\kerning0
+~\cf2 \expnd0\expndtw0\kerning0
+/close5/<component_name>\
+	$ npm install (to compile the code)\
+	$ nodemon boot.js (to start the api)\
+\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Please repeat this for all the components in order to start them. Note, for image-server component the last command should look like \'93$ nodemon app.js\'94.\
+\pard\pardeftab720
+
+\b\fs48 \cf2 \expnd0\expndtw0\kerning0
+\
+Run the iOS Client\
+\pard\tx720\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+	$ cd ~/close5/ios\
+	$ 
+\f2\fs28 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 open Close5.xcworkspace (to start the compilation process )
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\
+Select the 
+\f1\fs28 \expnd0\expndtw0\kerning0
+Close5 Dev
+\f0\fs32 \expnd0\expndtw0\kerning0
+ target to the left of the search field (at the top).\
+Select "Build and Run" (it looks like a play button at the top left).\
+\
+\pard\pardeftab720
+
+\b\fs72 \cf2 \expnd0\expndtw0\kerning0
+Staging/Production Configuration\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Staging and Production elastic beanstalk instances have a few configurations worth noting. Specifically {\field{\*\fldinst{HYPERLINK "https://github.com/Close5/core-api/blob/master/security%20group"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html}} management between core-api and its depedencies (Elasticsearch/Mongodb/Redis/etc).\
+To allow core-api to talk to it's dependencies, you'll need to modify the security group for each dependency to:\
+\pard\tx720\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+Allow 
+\f1\fs28 \expnd0\expndtw0\kerning0
+incoming
+\f0\fs32 \expnd0\expndtw0\kerning0
+ connections from core-api's security group. (ex. sg-123456)\
+\pard\tx720\tx1440\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+The security group id can be found in the beanstalk environment under Configuration > Instances > EC2 security groups\
+\pard\tx720\pardeftab720
+\cf2 \expnd0\expndtw0\kerning0
+Set the connection's specific port number that core-api will talk to it on. (ex. ES Loadbalancer=443, Mongodb=27017, Redis=6379)\
+\pard\pardeftab720
+{\field{\*\fldinst{HYPERLINK "https://www.dropbox.com/s/znbhxb8mqvviq9k/Screenshot%202015-12-07%2015.45.23.png"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+https://www.dropbox.com/s/znbhxb8mqvviq9k/Screenshot%202015-12-07%2015.45.23.png}}\cf3 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\b\fs56 \cf2 \expnd0\expndtw0\kerning0
+\
+In case you need to Debug the code\
+\pard\pardeftab720
+
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+Use the {\field{\*\fldinst{HYPERLINK "https://www.npmjs.com/package/debug"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+debug}} module for debug statements. Remember to namespace each file using debug to, e.g.: 'coreapi:config' for config.js and 'coreapi:app:models:items' for /app/models/app/models/items.js.\
+To use debug, simply require it and set and namespace:\
+\pard\pardeftab720
+
+\f1\fs28 \cf5 \expnd0\expndtw0\kerning0
+var\cf2 \expnd0\expndtw0\kerning0
+ debug \cf5 \expnd0\expndtw0\kerning0
+=\cf2 \expnd0\expndtw0\kerning0
+ \cf6 \expnd0\expndtw0\kerning0
+require\cf2 \expnd0\expndtw0\kerning0
+(\cf4 \expnd0\expndtw0\kerning0
+'debug'\cf2 \expnd0\expndtw0\kerning0
+)(\cf4 \expnd0\expndtw0\kerning0
+'coreapi:config'\cf2 \expnd0\expndtw0\kerning0
+);\
+\
+\cf5 \expnd0\expndtw0\kerning0
+function\cf2 \expnd0\expndtw0\kerning0
+ \cf7 \expnd0\expndtw0\kerning0
+set\cf2 \expnd0\expndtw0\kerning0
+(name, value) \{\
+  \cf5 \expnd0\expndtw0\kerning0
+if\cf2 \expnd0\expndtw0\kerning0
+ (\cf5 \expnd0\expndtw0\kerning0
+!\cf2 \expnd0\expndtw0\kerning0
+(name \cf5 \expnd0\expndtw0\kerning0
+in\cf2 \expnd0\expndtw0\kerning0
+ process.env)) \{\
+    \cf7 \expnd0\expndtw0\kerning0
+debug\cf2 \expnd0\expndtw0\kerning0
+(\cf4 \expnd0\expndtw0\kerning0
+'Setting '\cf5 \expnd0\expndtw0\kerning0
++\cf2 \expnd0\expndtw0\kerning0
+name\cf5 \expnd0\expndtw0\kerning0
++\cf4 \expnd0\expndtw0\kerning0
+' to: '\cf5 \expnd0\expndtw0\kerning0
++\cf2 \expnd0\expndtw0\kerning0
+value);\
+    process.env[name] \cf5 \expnd0\expndtw0\kerning0
+=\cf2 \expnd0\expndtw0\kerning0
+ value;\
+  \} \cf5 \expnd0\expndtw0\kerning0
+else\cf2 \expnd0\expndtw0\kerning0
+ \{\
+    \cf7 \expnd0\expndtw0\kerning0
+debug\cf2 \expnd0\expndtw0\kerning0
+(\cf4 \expnd0\expndtw0\kerning0
+'Using '\cf5 \expnd0\expndtw0\kerning0
++\cf2 \expnd0\expndtw0\kerning0
+name\cf5 \expnd0\expndtw0\kerning0
++\cf4 \expnd0\expndtw0\kerning0
+' from env: '\cf5 \expnd0\expndtw0\kerning0
++\cf2 \expnd0\expndtw0\kerning0
+process.env[name]);\
+  \}\
+\}\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+The output of the debug statements goes to stdout by default. You can also send statements to standard error.\
+Why namespace? To see the debug statements, create an environment variable called, DEBUG. And to see all coreapi debug statements, set it to:\
+\pard\pardeftab720
+
+\f1\fs28 \cf5 \expnd0\expndtw0\kerning0
+export\cf2 \expnd0\expndtw0\kerning0
+ DEBUG=\cf4 \expnd0\expndtw0\kerning0
+"coreapi:*"\cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+And to see just the statements in items, set it to:\
+\pard\pardeftab720
+
+\f1\fs28 \cf5 \expnd0\expndtw0\kerning0
+export\cf2 \expnd0\expndtw0\kerning0
+ DEBUG=\cf4 \expnd0\expndtw0\kerning0
+"coreapi:app:models:items"\cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+And to see just the statements in config.js and items.js, set it to:\
+\pard\pardeftab720
+
+\f1\fs28 \cf5 \expnd0\expndtw0\kerning0
+export\cf2 \expnd0\expndtw0\kerning0
+ DEBUG=\cf4 \expnd0\expndtw0\kerning0
+"coreapi:app:models:items,coreapi:config"\cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\f0\i\fs32 \cf2 \expnd0\expndtw0\kerning0
+NOTE
+\i0 \expnd0\expndtw0\kerning0
+: The DEBUG environment variable should never be set anywhere outside of your own development computer.\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\fs28 \cf0 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\b\fs52 \cf0 Other tools to mange AWS services:\
+\pard\tx720\pardeftab720
+{\field{\*\fldinst{HYPERLINK "https://aws.amazon.com/cli/"}}{\fldrslt 
+\b0\fs32 \cf3 \expnd0\expndtw0\kerning0
+\CocoaLigature1 awscli}}
+\b0\fs32 \cf2 \expnd0\expndtw0\kerning0
+\CocoaLigature1 : \
+	$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew install awscli
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx720\pardeftab720
+{\field{\*\fldinst{HYPERLINK "http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3.html"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+aws-elasticbeanstalk}}: \
+	$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew install aws-elasticbeanstalk
+\f0\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx720\pardeftab720
+{\field{\*\fldinst{HYPERLINK "http://docs.aws.amazon.com/cli/latest/reference/elasticache/index.html"}}{\fldrslt \cf3 \expnd0\expndtw0\kerning0
+aws-elasticache}}: \
+	$ 
+\f1\fs28 \expnd0\expndtw0\kerning0
+brew install aws-elasticache\
+\
+\
+}

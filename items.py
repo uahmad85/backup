@@ -1,0 +1,150 @@
+#!/usr/bin/python
+## coding: utf-8
+from time import asctime
+from time import sleep
+from subprocess import Popen, PIPE
+import pprint
+import pymongo
+import json
+from pymongo import MongoClient, MongoReplicaSetClient
+from elasticsearch import Elasticsearch
+import threading
+import logging
+import argparse
+import sys
+import datetime
+from elasticsearch.helpers import bulk
+import elasticsearch
+
+elas = Elasticsearch()
+
+skip = 0
+limit = 0
+
+#command line arguments
+parser = argparse.ArgumentParser(description='Usage: to index all the users or items ./index.py [ --user | --item ]')
+parser.add_argument('-u', '--user', action='store', default=False, help='for users indexing')
+parser.add_argument('-i', '--items', action='store', default=False, help='for items indexing')
+parser.add_argument('-s', '--skip', action='store', type=int, help='skip number of users')
+parser.add_argument('-l', '--limit', action='store', type=int, help='limit number of users to process at Once')
+parser.add_argument('-r', '--range', action='store', type=int, help='limit number of time this sctip should time * 50000 bulk index')
+parser.add_argument('-d', action='store', default=False, help='date in [YYYYYMMDD] format')
+results = parser.parse_args()
+
+#logging for the script
+#logging.basicConfig(filename='/var/lib/elasticsearch/data/indexing/index_log.log', level=logging.DEBUG,
+#                    format='[ %(asctime)s %(levelname)s] (%(threadName)-10s) %(message)s',)
+
+#logging for Elasticsearch
+tracer = logging.getLogger('elasticsearch.trace')
+tracer.setLevel(logging.INFO)
+#tracer.addHandler(logging.FileHandler('/var/lib/elasticsearch/data/indexing/es_trace.log'))
+pp = pprint.PrettyPrinter(indent=4)
+
+request_body = {
+    "settings" : {
+        "number_of_shards": 3,
+        "number_of_replicas": 0
+    }
+}
+count = 0
+file = '/data/indexing/counter_item'
+fh = open(file, 'a')
+fhr = open(file, 'r')
+num = [i for i in fhr.read().split('\n') if i][-1]
+int_num = int(num) or 1
+INDEX_NAME = 'close5-dev'
+bulk_data = []
+
+#connection Mongo to replica
+#client = MongoReplicaSetClient('localhost', 27017)
+client = MongoClient('mongodb.dev.close5.com', 27017)
+db = client['staging-close5']
+colls = db.collection_names(include_system_collections=False)
+
+# in case index (close5) does not exist.
+ES_HOST = {
+    "host" : "localhost",
+    "port" : 9200
+}
+
+es = Elasticsearch(hosts = [ES_HOST], timeout = 3000)
+
+if not es.indices.exists(INDEX_NAME):
+    print("creating '%s' index..." % (INDEX_NAME))
+    res = es.indices.create(index = INDEX_NAME, body = request_body)
+    print(" response: '%s'" % (res))
+    res_map = es.indices.put_mapping(index = INDEX_NAME, doc_type = 'user', body = user_map_body)
+    print(" response: '%s'" % (res_map))
+    res_item = es.indices.put_mapping(index = INDEX_NAME, doc_type = 'item', body = item_map_body)
+    print(" response: '%s'" % (res_item))
+
+inital_skip = results.skip or 0
+print"inital_skip %s" % results.skip
+skip = int_num * inital_skip or 1
+print "counter + skip", skip
+sleep(1)
+limit = results.limit or 15000
+query = ""
+ran = results.range or 50
+#to keep track of iterations of the script.
+sleep(2)
+if results.items:
+    for n in range(ran):
+        print "skip before query:", skip
+        print "limit before query:", limit
+        user_info = db.items.find().skip(skip).limit(limit)
+        skip = limit * (int_num + n)
+        count = int_num + n
+        fh.write(str(count) + '\n')
+        print "skip after query:", skip
+        print "limit after query:", limit
+        #user_info = db.users.find().count()
+        for user in user_info.batch_size(1024):
+            #print user['userId']
+            if '\x94' in user.values() : print user
+            data_dict = {}
+            try:
+                data_dict['status'] = str(user['status']).strip()
+                data_dict['location'] = ','.join([str(x).strip() for x in user['loc']])
+                data_dict['removed'] = str(user['removed']).strip()
+                data_dict['description'] = user['description']
+                data_dict['price'] = user['price']
+                data_dict['live'] = str(user['live']).strip()
+                data_dict['updatedAt'] = user['updatedAt'].isoformat()
+                data_dict['createdAt'] = user['createdAt'].isoformat()
+                data_dict['watchers'] = [str(x).strip() for x in user['watchers'] if user['watchers']]
+                data_dict['category'] =  [str(x).strip() if len(user['category']) != 0 else ['empty'] for x in user['category'] ]
+                data_dict['userId'] = str(user['userId']).strip()
+                data_dict['buyerId'] = str(user['buyerId']).strip()
+                data_dict['soldAt'] = user['soldAt'].isoformat()
+                data_dict['featured'] = user['featured']
+                data_dict['answers'] = [str(x).strip() for x in user['answers'] if user['answers']]
+            except KeyError as err:
+                data_dict['buyerId'] = str()
+                data_dict['soldAt'] = str()
+                data_dict['featured'] = str()
+                data_dict['answers'] = str()
+
+            op_dict = {
+                "index": {
+                    "_id": str(user['_id']).strip(),
+                    "_index": INDEX_NAME,
+                    "_type": 'item',
+                    "_parent": str(user['userId']).encode('utf-8').strip()
+                }
+            }
+            bulk_data.append(op_dict)
+            bulk_data.append(data_dict)
+            #print bulk_data
+            #print INDEX_NAME
+            #bulk index the data
+        print("bulk indexing...")
+        # res = elasticsearch.helpers.bulk(elas, bulk_data, doc_type='item', routing='user', index="close5", chunk_size=1024)
+        res = es.bulk(index = INDEX_NAME, body = bulk_data, timeout = 60, refresh = True)
+        #print(" response: '%s'" % (res))
+        print("results:")
+        proc = Popen("%s %s %s" % ('curl', '-XGET', 'http://localhost:9200/close5-dev/item/_count?pretty'), shell=True).communicate()[0]
+        proc
+        sleep(1)
+    fh.close()

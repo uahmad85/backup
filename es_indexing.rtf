@@ -1,0 +1,121 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red64\green11\blue217;\red242\green242\blue242;\red200\green20\blue201;
+\red180\green36\blue25;\red46\green174\blue187;\red193\green101\blue28;\red0\green0\blue233;\red0\green0\blue0;
+\red109\green109\blue109;\red38\green38\blue38;\red250\green249\blue246;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf2 \cb0 \CocoaLigature0 #!/usr/bin/python\cf3 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf4 import\cf3  pprint\
+\cf4 import\cf3  pymongo\
+\cf4 import\cf3  json\
+\cf4 from\cf3  pymongo \cf4 import\cf3  MongoClient\
+\cf4 from\cf3  elasticsearch \cf4 import\cf3  Elasticsearch\
+ES_HOST = \{\
+    \cf5 "host"\cf3  : \cf5 "localhost"\cf3 ,\
+    \cf5 "port"\cf3  : \cf5 9200\cf3 \
+\}\
+\
+INDEX_NAME = \cf5 'close5'\cf3 \
+TYPE_NAME = \cf5 'user'\cf3 \
+\
+pp = pprint.PrettyPrinter(indent=\cf5 4\cf3 )\
+bulk_data = []\
+es = Elasticsearch(hosts = [ES_HOST])\
+\
+client = MongoClient(\cf5 'localhost'\cf3 , \cf5 27017\cf3 )\
+db = client[\cf5 'close5-live'\cf3 ]\
+colls = db.collection_names(include_system_collections=\cf6 False\cf3 )\
+user_info = db.users.find(\{\cf5 "lastestLoc"\cf3 :\{\cf5 "$within"\cf3 :\{\cf5 "$box"\cf3 :[[\cf5 36.438961\cf3 ,-\cf5 114.754944\cf3 ],[\cf5 35.873472\cf3 ,-\cf5 115.480042\cf3 ]]\}\}\}).limit(\cf5 500\cf3 )\
+\
+\cf7 for\cf3  user \cf7 in\cf3  user_info:\
+    data_dict = \{\}\
+    data_dict[\cf5 'email'\cf3 ] = \cf6 str\cf3 (user[\cf5 'email'\cf3 ]).strip()\
+    data_dict[\cf5 'name'\cf3 ] = \cf6 str\cf3 (user[\cf5 'name'\cf3 ]).strip()\
+    data_dict[\cf5 'lastName'\cf3 ] = \cf6 str\cf3 (user[\cf5 'lastName'\cf3 ]).strip()\
+    op_dict = \{\
+    \cf5 "index"\cf3 : \{\
+    \cf5 "_id"\cf3 : \cf6 str\cf3 (user[\cf5 '_id'\cf3 ]).strip(),\
+    \cf5 "_index"\cf3 : INDEX_NAME,\
+    \cf5 "_type"\cf3 : TYPE_NAME\
+        \}\
+    \}\
+    bulk_data.append(op_dict)\
+    bulk_data.append(data_dict)\
+    \cf6 print\cf3  bulk_data\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf2 # in case index (close5) does not exist.\cf3 \
+request_body = \{\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf5 "settings"\cf3  : \{\
+\cf5 "number_of_shards"\cf3 : \cf5 3\cf3 ,\
+\cf5 "number_of_replicas"\cf3 : \cf5 0\cf3 \
+  \}\
+\}\
+\
+\cf7 if\cf3  \cf7 not\cf3  es.indices.exists(INDEX_NAME):\
+    \cf6 print\cf3 (\cf5 "creating '%s' index..."\cf3  % (INDEX_NAME))\
+    res = es.indices.create(index = INDEX_NAME, body = request_body)\
+    \cf6 print\cf3 (\cf5 " response: '%s'"\cf3  % (res))\
+\
+\
+\cf6 print\cf3  INDEX_NAME\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf2 # bulk index the data\cf3 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf6 print\cf3 (\cf5 "bulk indexing..."\cf3 )\
+res = es.bulk(index = \cf5 'close5'\cf3 , body = bulk_data, refresh = \cf6 True\cf3 )\
+\cf6 print\cf3 (\cf5 " response: '%s'"\cf3  % (res))\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf2 ## sanity check\cf3 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf6 print\cf3 (\cf5 "searching..."\cf3 )\
+res = es.search(index = INDEX_NAME, size=\cf5 2\cf3 , body=\{\cf5 "query"\cf3 : \{\cf5 "match_all"\cf3 : \{\}\}\})\
+\cf6 print\cf3 (\cf5 " response: '%s'"\cf3  % (res))\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf2 #\cf3 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf6 print\cf3 (\cf5 "results:"\cf3 )\
+\cf7 for\cf3  hit \cf7 in\cf3  res[\cf5 'hits'\cf3 ][\cf5 'hits'\cf3 ]\
+\cf6 script.lang\cf4 :\cf3  groovy\
+\cf6 script.groovy.sandbox.enabled\cf4 :\cf3  \cf5 true\cf3 \
+\cf6 script.inline\cf4 :\cf3  on\
+\cf6 script.indexed\cf4 :\cf3  on\
+\cf6 script.search\cf4 :\cf3  on\
+\cf6 script.engine.groovy.inline.aggs\cf4 :\cf3  on{\field{\*\fldinst{HYPERLINK "https://us-west-1.console.aws.amazon.com/ec2/v2/home?region=us-west-1#Volumes:search=vol-c300f027;sort=desc:volumeId"}}{\fldrslt 
+\f1\fs24 \cf8 \cb1 \expnd0\expndtw0\kerning0
+\ul \ulc8 \CocoaLigature1 \outl0\strokewidth0 \strokec8 \
+\pard\pardeftab720
+\cf8 \ulc8 \
+}}\pard\pardeftab720
+
+\f1\fs24 \cf9 \cb1 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec9 i-a4846e67\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth10020\clftsWidth3 \clheight560 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth10020\clftsWidth3 \clheight560 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720
+\cf9 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 Public DNS\
+ec2-52-53-229-84.us-west-1.compute.amazonaws.com\cell \lastrow\row
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs28 \cf3 \cb0 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 echo -e 'script.groovy.sandbox.enabled: true\\nscript.lang: groovy\\nscript.inline: on\\nscript.indexed: on\\nscript.search: on' >>\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf6 script.disable_dynamic\cf4 :\cf3  \cf5 false\
+\
+\pard\pardeftab720
+
+\fs24 \cf11 \cb12 \expnd0\expndtw0\kerning0
+\CocoaLigature1 curl -X GET -H "x-device-platform: ios" -H "Cache-Control: no-cache" -H "Postman-Token: f8f1f81f-5bce-0ac7-24c4-672f3a4fc455" '{\field{\*\fldinst{HYPERLINK "https://api-swap.close5.com/users/items/grouped?maxDistance=50&lat=37.320352&lon=-121.9045411"}}{\fldrslt https://api-swap.close5.com/users/items/grouped?maxDistance=50&lat=37.320352&lon=-121.9045411}}'
+\f1 \cf9 \cb1 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec9 \
+}
